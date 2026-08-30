@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة النسر العربي - Arabian Eagle AEC Gateway</title>
+    <!-- استدعاء حزمة Pi SDK المحدثة والمصوبة -->
+    <script src="https://minepi.com"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f7f6; padding: 20px; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1000px; margin: 30px auto; }
+        .app-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.3s; text-decoration: none; color: #333; }
+        .app-card:hover { transform: translateY(-5px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+        .status { color: #27ae60; font-weight: bold; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+    <h1>بوابة النسر العربي (AEC Gateway)</h1>
+    <p>اختر التطبيق الذي ترغب في الانتقال إليه داخل نظام Pi البيئي</p>
+
+    <!-- شبكة عرض التطبيقات التسعة بدون تداخل أكوادها -->
+    <div class="grid-container" id="apps-grid">
+        <!-- سيتم ربط روابط التطبيقات التسعة هنا في الأولوية الثالثة -->
+    </div>
+
+    <script>
+        // تهيئة بيئة الاختبار لشبكة Pi
+        Pi.init({ version: "2.0", sandbox: true });
+        
+        // التحقق من هوية المستخدم عند دخول البوابة
+        function onIncompletePaymentFound(payment) { /* لمعالجة المدفوعات المعلقة لاحقاً */ }
+        
+        Pi.authenticate(['username', 'payments'], onIncompletePaymentFound)
+        .then(function(auth) {
+            console.log("تم تسجيل الدخول بنجاح للمستخدم: " + auth.user.username);
+        }).catch(function(error) {
+            console.error("خطأ في تسجيل الدخول:", error);
+        });
+    </script>
+</body>
+</html>
