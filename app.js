@@ -1,53 +1,73 @@
-// app.js - بوابة خادم المحفظة والأبحاث الاقتصادية للريال الرقمي اليمني (BIGISH-YER)
-const http = require('http');
+// تكوين موحد للتطبيقات (يجب مزامنته مع ملف التكوين الخادمي)
+const APP_CONFIG = [
+  {
+    id: 'bigish-yer',
+    name: 'BIGISH-YER',
+    description: 'طبقة التسوية المالية الأساسية',
+    url: 'https://bigish-yer.example.com', // سيتم استبداله بالرابط الفعلي
+    healthEndpoint: 'https://bigish-yer.example.com/api/health',
+    category: 'financial'
+  },
+  // ... باقي التطبيقات (GAV, AJYAL, suppliers-auction, COBRA, Be-well, AMAN, AEC-Fund, Telcom)
+];
 
-console.log("🪙 محرك الريال الرقمي اليمني (BIGISH-YER) نشط للامتثال السحابي...");
-
-// دالة المقاصة لضمان الشفافية لصندوق ابتكارات اليونيسف
-function processSovereignAidSimulation(beneficiary, amountInYer, purposeCode) {
-    try {
-        const yerScale = 10000000000n; // 10 decimals لعملة YER
-        const rawAmount = BigInt(amountInYer) * yerScale;
-
-        const purposeRegistry = {
-            1: "NUTRITION_AND_MILK_FUND",
-            2: "TEACHER_DIGITAL_PAYROLL",
-            3: "HEALTHCARE_EMERGENCY"
-        };
-
-        const purposeText = purposeRegistry[purposeCode] || "GENERAL_ALTERNATIVE_ECONOMIC_AID";
-
-        if (rawAmount <= 0n) {
-            throw new Error("قيمة مخصص الدعم الإنساني غير صالحة");
-        }
-
-        return {
-            success: true,
-            recipient: beneficiary,
-            allocated_purpose: purposeText,
-            amount_subunits: rawAmount.toString(),
-            security_lock: "Atomic Concurrency Lock Active"
-        };
-    } catch (err) {
-        return { success: false, error: err.message };
+// دالة لجلب الحالة الصحية لكل تطبيق
+async function fetchAppStatus(app) {
+  try {
+    const response = await fetch(app.healthEndpoint, { signal: AbortSignal.timeout(5000) });
+    if (response.ok) {
+      const data = await response.json();
+      return data.status || 'ONLINE';
     }
+    return 'DEGRADED';
+  } catch {
+    return 'OFFLINE';
+  }
 }
 
-// بناء خادم استجابة الويب السريع المتوافق مع بيئة Vercel Serverless
-const server = http.createServer((req, res) => {
-    const aidCheck = processSovereignAidSimulation("GD3W...YEMEN_BENEFICIARY", 2500, 1);
-    
-    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-    res.end(JSON.stringify({
-        mother_gateway: "بوابة النسر العربي السيادية الأم (A.E.C.)",
-        microservice: "محفظة وأبحاث الريال الرقمي اليمني (BIGISH-YER)",
-        status: "LIVE_CONNECTED",
-        unicef_transparency_compliance: "PASSED_VERIFIED",
-        audit_log: aidCheck
-    }, (key, value) => typeof value === 'bigint' ? value.toString() : value, 2)); // حماية مخصصة لمنع انهيار الـ BigInt
+// دالة لعرض البطاقات
+async function renderDashboard() {
+  const grid = document.getElementById('appsGrid');
+  const loading = document.getElementById('loadingIndicator');
+  const errorDiv = document.getElementById('errorMessage');
+  loading.style.display = 'block';
+  errorDiv.classList.add('hidden');
+
+  try {
+    const statuses = await Promise.all(APP_CONFIG.map(app => fetchAppStatus(app)));
+    grid.innerHTML = APP_CONFIG.map((app, i) => `
+      <div class="app-card" role="article" aria-label="${app.name}">
+        <div class="app-header">
+          <h2>${app.name}</h2>
+          <span class="status-badge status-${statuses[i].toLowerCase()}">${statuses[i]}</span>
+        </div>
+        <p>${app.description}</p>
+        <div class="app-footer">
+          <a href="${app.url !== 'NOT_DEPLOYED' ? app.url : '#'}" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             class="${app.url === 'NOT_DEPLOYED' ? 'disabled-link' : ''}">
+            ${app.url !== 'NOT_DEPLOYED' ? 'زيارة التطبيق' : 'غير منشور'}
+          </a>
+        </div>
+      </div>
+    `).join('');
+  } catch (error) {
+    errorDiv.classList.remove('hidden');
+    console.error('فشل تحميل لوحة التحكم:', error);
+  } finally {
+    loading.style.display = 'none';
+  }
+}
+
+// تبديل اللغة (RTL/LTR)
+document.getElementById('langToggle').addEventListener('click', function() {
+  const isRtl = document.documentElement.dir === 'rtl';
+  document.documentElement.dir = isRtl ? 'ltr' : 'rtl';
+  document.documentElement.lang = isRtl ? 'en' : 'ar';
+  this.textContent = isRtl ? 'عربي' : 'English';
 });
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT);
-
-module.exports = server;
+// التحميل الأولي
+document.addEventListener('DOMContentLoaded', renderDashboard);
+document.getElementById('refreshBtn').addEventListener('click', renderDashboard);
