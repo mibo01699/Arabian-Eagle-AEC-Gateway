@@ -1,42 +1,110 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة النسر العربي - Arabian Eagle AEC Gateway</title>
-    <!-- استدعاء حزمة Pi SDK المحدثة والمصوبة -->
-    <script src="https://minepi.com"></script>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f7f6; padding: 20px; }
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1000px; margin: 30px auto; }
-        .app-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.3s; text-decoration: none; color: #333; }
-        .app-card:hover { transform: translateY(-5px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
-        .status { color: #27ae60; font-weight: bold; font-size: 0.9em; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data:; connect-src 'self' http://localhost:3000 https://*.vercel.app;">
+  <title>AEC Gateway | البوابة العربية السيادية</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+  <style>
+    :root {
+      --primary: #1a3c34;
+      --secondary: #c9a959;
+      --bg: #f8f5f0;
+      --text: #222;
+    }
+    body {
+      background-color: var(--bg);
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      color: var(--text);
+    }
+    .navbar {
+      background-color: var(--primary) !important;
+    }
+    .navbar-brand, .nav-link {
+      color: #fff !important;
+    }
+    .card-app {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      height: 100%;
+    }
+    .card-app:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-left: 5px;
+    }
+    .status-online { background-color: #28a745; }
+    .status-degraded { background-color: #ffc107; }
+    .status-offline { background-color: #dc3545; }
+    .status-notdeployed { background-color: #6c757d; }
+    .status-unknown { background-color: #adb5bd; }
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 300px;
+    }
+    .error-message {
+      color: #dc3545;
+      text-align: center;
+      padding: 2rem;
+    }
+    footer {
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #e9ecef;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-
-    <h1>بوابة النسر العربي (AEC Gateway)</h1>
-    <p>اختر التطبيق الذي ترغب في الانتقال إليه داخل نظام Pi البيئي</p>
-
-    <!-- شبكة عرض التطبيقات التسعة بدون تداخل أكوادها -->
-    <div class="grid-container" id="apps-grid">
-        <!-- سيتم ربط روابط التطبيقات التسعة هنا في الأولوية الثالثة -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="#">AEC Gateway</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="#dashboard">لوحة التحكم</a></li>
+          <li class="nav-item"><a class="nav-link" href="#apps">التطبيقات</a></li>
+          <li class="nav-item"><a class="nav-link" href="#status">الحالة</a></li>
+        </ul>
+        <button id="langToggle" class="btn btn-outline-light ms-2">English</button>
+      </div>
     </div>
+  </nav>
 
-    <script>
-        // تهيئة بيئة الاختبار لشبكة Pi
-        Pi.init({ version: "2.0", sandbox: true });
-        
-        // التحقق من هوية المستخدم عند دخول البوابة
-        function onIncompletePaymentFound(payment) { /* لمعالجة المدفوعات المعلقة لاحقاً */ }
-        
-        Pi.authenticate(['username', 'payments'], onIncompletePaymentFound)
-        .then(function(auth) {
-            console.log("تم تسجيل الدخول بنجاح للمستخدم: " + auth.user.username);
-        }).catch(function(error) {
-            console.error("خطأ في تسجيل الدخول:", error);
-        });
-    </script>
+  <main class="container mt-4">
+    <section id="dashboard">
+      <h2 class="mb-4">منصة السيادة الرقمية</h2>
+      <div id="loading" class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">جار التحميل...</span>
+        </div>
+      </div>
+      <div id="errorContainer" class="error-message d-none"></div>
+      <div id="appsGrid" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 d-none">
+        <!-- يتم حقن البطاقات ديناميكيًا من app.js -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>AEC Gateway &copy; 2025 - جميع الحقوق محفوظة</p>
+  </footer>
+
+  <!-- Bootstrap JS (لا يحتوي على أي أسرار) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- سكربت التطبيق الخاص بنا -->
+  <script src="app.js"></script>
 </body>
 </html>
