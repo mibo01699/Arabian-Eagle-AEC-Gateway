@@ -71,3 +71,37 @@ document.getElementById('langToggle').addEventListener('click', function() {
 // التحميل الأولي
 document.addEventListener('DOMContentLoaded', renderDashboard);
 document.getElementById('refreshBtn').addEventListener('click', renderDashboard);
+// تحميل Pi SDK من CDN الرسمي (تحديث حسب أحدث وثائق)
+function loadPiSDK() {
+  return new Promise((resolve, reject) => {
+    if (window.Pi) return resolve(window.Pi);
+    const script = document.createElement('script');
+    script.src = 'https://cdn.minepi.com/pi-sdk.js'; // أو استخدام npm
+    script.onload = () => resolve(window.Pi);
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+async function authenticateWithPi() {
+  const Pi = await loadPiSDK();
+  try {
+    const auth = await Pi.authenticate(['payments', 'username'], { onIncompletePaymentFound: handleIncompletePayment });
+    // إرسال auth.accessToken إلى الخادم للتحقق
+    const response = await fetch('/api/auth/pi', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ accessToken: auth.accessToken, user: auth.user })
+    });
+    const result = await response.json();
+    if (result.verified) {
+      // تحديث حالة المستخدم
+    }
+  } catch (error) {
+    console.error('فشل مصادقة Pi:', error);
+  }
+}
+
+function handleIncompletePayment(payment) {
+  // معالجة المدفوعات المعلقة (عرض واجهة للمستخدم)
+}
