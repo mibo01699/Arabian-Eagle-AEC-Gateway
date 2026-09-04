@@ -131,4 +131,118 @@ function addMessage(text, sender = 'bot') {
 }
 
 function showTyping() {
-  const typingDiv = document
+  const typingDiv = document.createElement('div');
+  typingDiv.className = 'message bot typing-indicator';
+  typingDiv.innerHTML = '<span class="message-text">⏳ <span data-i18n="support.connecting">جاري الاتصال...</span></span>';
+  typingDiv.id = 'typingIndicator';
+  elements.chatMessages.appendChild(typingDiv);
+  elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+}
+
+function hideTyping() {
+  const typing = document.getElementById('typingIndicator');
+  if (typing) typing.remove();
+}
+
+// استجابات الذكاء الاصطناعي (محاكاة)
+function getAIResponse(message) {
+  const lower = message.toLowerCase();
+  const responses = {
+    'مرحب': 'مرحباً! كيف يمكنني مساعدتك اليوم؟',
+    'سلام': 'وعليكم السلام! كيف يمكنني خدمتك؟',
+    'مشكلة': 'آسف لسماع ذلك. هل يمكنك توضيح المشكلة أكثر؟',
+    'تسجيل': 'يمكنك تسجيل الدخول باستخدام حساب Pi Network الخاص بك.',
+    'تطبيق': 'لدينا 9 تطبيقات: BIGISH-YER، AEC Fund، Be-well، AJYAL، GAV، Auction، COBRA، AMAN، Telcom.',
+    'دعم': 'يمكنك إنشاء تذكرة دعم أو التواصل مع فريق الدعم البشري.',
+    'شكر': 'على الرحب والسعة! نحن هنا لخدمتك دائماً.',
+    'مع السلامة': 'مع السلامة! نتمنى لك يوماً طيباً.',
+  };
+  
+  for (const [key, value] of Object.entries(responses)) {
+    if (lower.includes(key)) return value;
+  }
+  return 'شكراً لسؤالك. سيقوم فريق الدعم البشري بالرد عليك قريباً. هل تريد إنشاء تذكرة دعم؟';
+}
+
+async function handleSendMessage() {
+  const message = elements.chatInput.value.trim();
+  if (!message) return;
+  
+  addMessage(message, 'user');
+  elements.chatInput.value = '';
+  showTyping();
+  
+  // محاكاة تأخير الرد
+  setTimeout(() => {
+    hideTyping();
+    const response = getAIResponse(message);
+    addMessage(response, 'bot');
+  }, 800 + Math.random() * 600);
+}
+
+// ===== تذكرة الدعم =====
+async function handleTicketSubmit(e) {
+  e.preventDefault();
+  
+  const ticketData = {
+    name: document.getElementById('ticketName').value.trim(),
+    email: document.getElementById('ticketEmail').value.trim(),
+    subject: document.getElementById('ticketSubject').value.trim(),
+    priority: document.getElementById('ticketPriority').value,
+    message: document.getElementById('ticketMessage').value.trim(),
+    timestamp: new Date().toISOString(),
+  };
+  
+  if (!ticketData.name || !ticketData.email || !ticketData.subject || !ticketData.message) {
+    showToast('يرجى ملء جميع الحقول المطلوبة.', 'warning');
+    return;
+  }
+  
+  try {
+    // محاكاة إرسال التذكرة (سيتم ربطها بالـ Backend لاحقاً)
+    console.log('Ticket created:', ticketData);
+    showToast(i18n.t('toast.support.ticketCreated'), 'info');
+    elements.ticketForm.reset();
+  } catch (error) {
+    console.error('Error creating ticket:', error);
+    showToast(i18n.t('toast.support.ticketFailed'), 'error');
+  }
+}
+
+// ===== تهيئة الصفحة =====
+async function initSupport() {
+  await initI18n();
+  
+  // عرض الأسئلة الشائعة افتراضياً
+  showSection('faq');
+  
+  // مستمعي الأحداث
+  elements.langToggle.addEventListener('click', toggleLanguage);
+  elements.refreshBtn.addEventListener('click', () => {
+    showToast(i18n.t('toast.refreshSuccess'), 'info');
+  });
+  
+  // بطاقات الدعم
+  elements.supportCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const type = card.dataset.support;
+      showSection(type);
+    });
+  });
+  
+  // الأسئلة الشائعة
+  initFaq();
+  
+  // المحادثة
+  elements.sendMessageBtn.addEventListener('click', handleSendMessage);
+  elements.chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleSendMessage();
+  });
+  
+  // نموذج التذكرة
+  elements.ticketForm.addEventListener('submit', handleTicketSubmit);
+  
+  console.log('🦅 Support Center initialized');
+}
+
+document.addEventListener('DOMContentLoaded', initSupport);
