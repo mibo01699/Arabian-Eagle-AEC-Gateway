@@ -1,0 +1,289 @@
+/* ===== صفحة Pi ===== */
+.pi-page .page-header {
+  padding-bottom: 20px;
+}
+
+.pi-container {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* ===== حالة المصادقة ===== */
+.auth-status {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-indicator .status-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-indicator .status-dot.online {
+  background: var(--online);
+}
+
+.status-indicator .status-dot.offline {
+  background: var(--offline);
+}
+
+.status-indicator .status-dot.pending {
+  background: var(--degraded);
+  animation: pulse 1.5s infinite;
+}
+
+.status-label {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* ===== الأزرار ===== */
+.auth-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pi-btn {
+  padding: 12px 28px;
+  border-radius: 25px;
+  border: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: inherit;
+}
+
+.pi-btn:active {
+  transform: scale(0.97);
+}
+
+.pi-btn.primary {
+  background: linear-gradient(135deg, var(--gold), var(--accent));
+  color: var(--primary);
+}
+
+.pi-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(252, 92, 125, 0.3);
+}
+
+.pi-btn.secondary {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text);
+}
+
+.pi-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.pi-btn.success {
+  background: var(--online);
+  color: var(--primary);
+}
+
+.pi-btn.success:hover {
+  box-shadow: 0 6px 25px rgba(72, 187, 120, 0.3);
+}
+
+.pi-btn.danger {
+  background: var(--offline);
+  color: var(--text);
+}
+
+.pi-btn.danger:hover {
+  box-shadow: 0 6px 25px rgba(252, 129, 129, 0.3);
+}
+
+/* ===== معلومات المستخدم ===== */
+.user-info {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.user-info h3 {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.info-value {
+  font-weight: 600;
+  font-size: 0.95rem;
+  direction: ltr;
+  text-align: left;
+  word-break: break-all;
+  max-width: 60%;
+}
+
+/* ===== نموذج الدفع ===== */
+.payment-section {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.payment-section h3 {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+#paymentForm .form-group {
+  margin-bottom: 14px;
+}
+
+#paymentForm label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+#paymentForm input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: var(--transition);
+}
+
+#paymentForm input:focus {
+  border-color: var(--gold);
+}
+
+.payment-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.payment-actions .pi-btn {
+  flex: 1;
+  justify-content: center;
+  min-width: 120px;
+}
+
+/* ===== سجل المعاملات ===== */
+.transaction-history {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.transaction-history h3 {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--card-border);
+  font-size: 0.9rem;
+}
+
+.transaction-item:last-child {
+  border-bottom: none;
+}
+
+.transaction-item .tx-amount {
+  font-weight: 700;
+}
+
+.transaction-item .tx-amount.positive {
+  color: var(--online);
+}
+
+.transaction-item .tx-amount.negative {
+  color: var(--offline);
+}
+
+.transaction-item .tx-date {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+/* ===== التجاوب ===== */
+@media (max-width: 480px) {
+  .pi-container {
+    gap: 16px;
+  }
+  
+  .auth-actions {
+    flex-direction: column;
+  }
+  
+  .pi-btn {
+    justify-content: center;
+    padding: 14px 20px;
+    width: 100%;
+  }
+  
+  .info-item {
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .info-value {
+    max-width: 100%;
+    text-align: right;
+  }
+  
+  .payment-actions {
+    flex-direction: column;
+  }
+  
+  .payment-actions .pi-btn {
+    min-width: unset;
+  }
+}
