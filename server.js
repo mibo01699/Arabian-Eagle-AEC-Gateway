@@ -162,3 +162,31 @@ app.get('/knowledge-base', (req, res) => {
 
 // خدمة ملفات data
 app.use('/data', express.static(path.join(__dirname, 'public', 'data')));
+// بعد مسار المعرفة (/knowledge-base)
+app.get('/pi-auth', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'pi-auth.html'));
+});
+
+// نقطة نهاية لمصادقة Pi (خادم الخادم)
+app.post('/api/auth/pi', async (req, res) => {
+  try {
+    const { accessToken, user } = req.body;
+    
+    // التحقق من صحة الرمز (تطبيق التحقق من جانب الخادم)
+    if (!accessToken || !user) {
+      return res.status(400).json({ error: 'Missing access token or user data' });
+    }
+
+    // هنا يمكن إضافة التحقق من الرمز مع Pi Network API
+    // https://api.minepi.com/v2/me
+    
+    res.status(200).json({
+      success: true,
+      user: user,
+      message: 'Authentication successful'
+    });
+  } catch (error) {
+    console.error('Pi auth error:', error);
+    res.status(500).json({ error: 'Authentication failed' });
+  }
+});
