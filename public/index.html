@@ -4,95 +4,84 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#0a0e27">
-  <meta name="description" content="Arabian Eagle AEC Gateway - البوابة السيادية الموحدة لمنظومة النسر العربي">
+  <meta name="description" content="Arabian Eagle AEC Gateway - البوابة السيادية الموحدة">
   <title>🦅 AEC Gateway</title>
   
-  <!-- CSS -->
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/responsive.css">
-  
-  <!-- Font Awesome (أيقونات) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-  <!-- شريط التنقل العلوي -->
   <nav class="navbar">
     <div class="nav-container">
       <div class="nav-brand">
         <span class="logo-icon">🦅</span>
-        <span class="brand-text">AEC Gateway</span>
+        <span class="brand-text" data-i18n="app.name">AEC Gateway</span>
       </div>
       <div class="nav-actions">
-        <button class="nav-btn" id="langToggle" aria-label="تبديل اللغة">
+        <button class="nav-btn" id="langToggle" aria-label="تبديل اللغة" data-i18n-tooltip="buttons.language">
           <i class="fas fa-globe"></i>
         </button>
-        <button class="nav-btn" id="refreshBtn" aria-label="تحديث">
+        <button class="nav-btn" id="refreshBtn" aria-label="تحديث" data-i18n-tooltip="buttons.refresh">
           <i class="fas fa-sync-alt"></i>
         </button>
       </div>
     </div>
   </nav>
 
-  <!-- المحتوى الرئيسي -->
   <main class="main-content">
-    <!-- رأس الصفحة -->
     <header class="page-header">
-      <h1>🦅 البوابة السيادية الموحدة</h1>
-      <p class="subtitle">مراقبة حالة التطبيقات اللامركزية التسعة</p>
+      <h1 data-i18n="app.title">🦅 البوابة السيادية الموحدة</h1>
+      <p class="subtitle" data-i18n="app.subtitle">مراقبة حالة التطبيقات اللامركزية التسعة</p>
     </header>
 
-    <!-- بطاقة الملخص السريع -->
     <section class="summary-cards" id="summaryCards">
       <div class="summary-card total">
         <span class="summary-icon"><i class="fas fa-cubes"></i></span>
         <div class="summary-info">
           <span class="summary-number" id="totalApps">9</span>
-          <span class="summary-label">إجمالي التطبيقات</span>
+          <span class="summary-label" data-i18n="summary.total">إجمالي التطبيقات</span>
         </div>
       </div>
       <div class="summary-card online">
         <span class="summary-icon"><i class="fas fa-check-circle"></i></span>
         <div class="summary-info">
           <span class="summary-number" id="onlineApps">0</span>
-          <span class="summary-label">متصل</span>
+          <span class="summary-label" data-i18n="summary.online">متصل</span>
         </div>
       </div>
       <div class="summary-card degraded">
         <span class="summary-icon"><i class="fas fa-exclamation-triangle"></i></span>
         <div class="summary-info">
           <span class="summary-number" id="degradedApps">0</span>
-          <span class="summary-label">متعطل جزئياً</span>
+          <span class="summary-label" data-i18n="summary.degraded">متعطل جزئياً</span>
         </div>
       </div>
       <div class="summary-card offline">
         <span class="summary-icon"><i class="fas fa-times-circle"></i></span>
         <div class="summary-info">
           <span class="summary-number" id="offlineApps">0</span>
-          <span class="summary-label">غير متصل</span>
+          <span class="summary-label" data-i18n="summary.offline">غير متصل</span>
         </div>
       </div>
     </section>
 
-    <!-- حالة المنظومة العامة -->
     <div class="system-status" id="systemStatus">
       <span class="status-dot"></span>
-      <span class="status-text">جاري التحميل...</span>
+      <span class="status-text" data-i18n="status.loading">جاري التحميل...</span>
       <span class="status-time" id="lastUpdate"></span>
     </div>
 
-    <!-- شبكة التطبيقات -->
-    <section class="apps-grid" id="appsGrid">
-      <!-- سيتم ملؤها بواسطة JavaScript -->
-    </section>
+    <section class="apps-grid" id="appsGrid"></section>
 
-    <!-- تذييل الصفحة -->
     <footer class="page-footer">
-      <p>© 2026 <strong>Arabian Eagle Tech</strong> — جميع الحقوق محفوظة</p>
-      <p class="footer-version">الإصدار 1.0.0</p>
+      <p>© 2026 <strong>Arabian Eagle Tech</strong> — <span data-i18n="app.footer">جميع الحقوق محفوظة</span></p>
+      <p class="footer-version"><span data-i18n="app.version">الإصدار</span> 1.0.0</p>
     </footer>
   </main>
 
   <!-- JavaScript -->
+  <script src="/js/i18n.js"></script>
   <script src="/js/api.js"></script>
   <script src="/js/dashboard.js"></script>
 </body>
