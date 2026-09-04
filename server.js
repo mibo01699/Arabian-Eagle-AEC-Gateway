@@ -151,3 +151,7 @@ if (require.main === module) {
     console.log(`📋 ${APPS_REGISTRY.length} applications registered`);
   });
 }
+// بعد مسار الجذر (/)
+app.get('/support', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'support.html'));
+});
