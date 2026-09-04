@@ -47,6 +47,10 @@
       "ticketFailed": "فشل إنشاء التذكرة. حاول مرة أخرى.",
       "messageSent": "تم إرسال رسالتك بنجاح.",
       "messageFailed": "فشل إرسال الرسالة. حاول مرة أخرى."
+    },
+    "knowledge": {
+      "articleNotFound": "المقال غير موجود",
+      "searchNoResults": "لا توجد نتائج مطابقة للبحث"
     }
   },
   "buttons": {
@@ -55,7 +59,10 @@
     "support": "مركز الدعم",
     "submit": "إرسال",
     "close": "إغلاق",
-    "chat": "محادثة"
+    "chat": "محادثة",
+    "search": "بحث",
+    "readMore": "اقرأ المزيد",
+    "back": "رجوع"
   },
   "support": {
     "title": "🦅 مركز الدعم",
@@ -96,8 +103,28 @@
       "a5": "نعم، البوابة تطبق أعلى معايير الأمان بما في ذلك CSP، منع XSS، حماية CSRF، والتحقق من جميع المدخلات."
     }
   },
+  "knowledge": {
+    "title": "📚 قاعدة المعرفة",
+    "subtitle": "دليل شامل لمنظومة النسر العربي للتطبيقات اللامركزية",
+    "searchPlaceholder": "ابحث في قاعدة المعرفة...",
+    "categories": "التصنيفات",
+    "all": "الكل",
+    "articles": "المقالات",
+    "noArticles": "لا توجد مقالات في هذا التصنيف",
+    "readTime": "دقائق قراءة",
+    "lastUpdated": "آخر تحديث",
+    "categoryLabels": {
+      "getting-started": "بدء الاستخدام",
+      "technical": "تقني",
+      "financial": "مالي",
+      "security": "أمني",
+      "troubleshooting": "استكشاف الأخطاء",
+      "integration": "تكامل"
+    }
+  },
   "nav": {
     "dashboard": "لوحة التحكم",
-    "support": "الدعم"
+    "support": "الدعم",
+    "knowledge": "قاعدة المعرفة"
   }
 }
