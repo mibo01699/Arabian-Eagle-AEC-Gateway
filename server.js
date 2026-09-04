@@ -342,3 +342,115 @@ if (require.main === module) {
     console.log(`🔒 Security features enabled`);
   });
 }
+// ===== دالة التحقق من Pi Token =====
+async function verifyPiToken(accessToken) {
+  // 1. التحقق من وجود التوكن
+  if (!accessToken || accessToken.length < 10) {
+    return { valid: false, error: 'INVALID_TOKEN' };
+  }
+
+  try {
+    // 2. الاتصال بـ Pi API للتحقق
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // مهلة 5 ثوانٍ
+
+    const response = await fetch('https://api.minepi.com/v2/me', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    // 3. معالجة استجابة Pi API
+    if (!response.ok) {
+      if (response.status === 401) {
+        return { valid: false, error: 'INVALID_TOKEN' };
+      }
+      if (response.status === 429) {
+        return { valid: false, error: 'RATE_LIMITED' };
+      }
+      return { valid: false, error: 'PI_API_ERROR' };
+    }
+
+    const userData = await response.json();
+
+    // 4. التحقق من وجود بيانات المستخدم
+    if (!userData || !userData.username) {
+      return { valid: false, error: 'USER_NOT_FOUND' };
+    }
+
+    // 5. إرجاع بيانات المستخدم الموثقة
+    return {
+      valid: true,
+      user: {
+        username: userData.username,
+        walletAddress: userData.wallet_address || null,
+        email: userData.email || null,
+      }
+    };
+
+  } catch (error) {
+    // 6. معالجة أخطاء الشبكة أو المهلة
+    console.error('Pi verification error:', error);
+    if (error.name === 'AbortError') {
+      return { valid: false, error: 'TIMEOUT' };
+    }
+    return { valid: false, error: 'NETWORK_ERROR' };
+  }
+}
+
+// ===== نقطة النهاية /api/auth/pi (معدلة) =====
+app.post('/api/auth/pi', validatePiAuth, handleValidationErrors, async (req, res) => {
+  try {
+    const { accessToken } = req.body;
+
+    // 1. التحقق من التوكن مع Pi API
+    const verification = await verifyPiToken(accessToken);
+
+    // 2. معالجة حالات الفشل
+    if (!verification.valid) {
+      const errorMap = {
+        'INVALID_TOKEN': { status: 401, message: 'Invalid or expired token' },
+        'RATE_LIMITED': { status: 429, message: 'Too many requests to Pi API' },
+        'TIMEOUT': { status: 504, message: 'Pi API timeout' },
+        'USER_NOT_FOUND': { status: 404, message: 'User not found on Pi Network' },
+        'PI_API_ERROR': { status: 503, message: 'Pi API service unavailable' },
+        'NETWORK_ERROR': { status: 502, message: 'Network error connecting to Pi API' },
+      };
+
+      const error = errorMap[verification.error] || { status: 500, message: 'Authentication failed' };
+      
+      // تسجيل محاولة فاشلة
+      console.warn(`[AUTH_FAILED] IP: ${req.ip} - Error: ${verification.error}`);
+
+      return res.status(error.status).json({
+        success: false,
+        error: error.message,
+        code: verification.error,
+      });
+    }
+
+    // 3. مصادقة ناجحة
+    const { user } = verification;
+
+    // تسجيل محاولة ناجحة
+    console.log(`[AUTH_SUCCESS] IP: ${req.ip} - User: ${user.username}`);
+
+    res.status(200).json({
+      success: true,
+      user: user,
+      message: 'Authentication successful',
+    });
+
+  } catch (error) {
+    console.error('Auth endpoint error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Internal server error',
+    });
+  }
+});
