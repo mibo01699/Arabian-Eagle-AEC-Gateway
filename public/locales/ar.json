@@ -51,6 +51,13 @@
     "knowledge": {
       "articleNotFound": "المقال غير موجود",
       "searchNoResults": "لا توجد نتائج مطابقة للبحث"
+    },
+    "pi": {
+      "authSuccess": "تم تسجيل الدخول بنجاح عبر Pi Network",
+      "authFailed": "فشل تسجيل الدخول عبر Pi Network",
+      "paymentSuccess": "تمت المعاملة بنجاح",
+      "paymentFailed": "فشلت المعاملة",
+      "paymentCancelled": "تم إلغاء المعاملة"
     }
   },
   "buttons": {
@@ -62,7 +69,10 @@
     "chat": "محادثة",
     "search": "بحث",
     "readMore": "اقرأ المزيد",
-    "back": "رجوع"
+    "back": "رجوع",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "pay": "دفع"
   },
   "support": {
     "title": "🦅 مركز الدعم",
@@ -122,9 +132,40 @@
       "integration": "تكامل"
     }
   },
+  "pi": {
+    "title": "🔐 مصادقة Pi Network",
+    "subtitle": "قم بتسجيل الدخول باستخدام حساب Pi Network الخاص بك",
+    "loginButton": "تسجيل الدخول عبر Pi Network",
+    "logoutButton": "تسجيل الخروج",
+    "userInfo": "معلومات المستخدم",
+    "username": "اسم المستخدم",
+    "walletAddress": "عنوان المحفظة",
+    "balance": "الرصيد",
+    "paymentTitle": "💳 تأكيد الدفع",
+    "paymentAmount": "المبلغ",
+    "paymentDescription": "الوصف",
+    "paymentMemo": "المذكرة",
+    "confirmPayment": "تأكيد الدفع",
+    "cancelPayment": "إلغاء",
+    "status": {
+      "authenticated": "✅ تم المصادقة",
+      "unauthenticated": "❌ غير مصادق",
+      "pending": "⏳ قيد المعالجة",
+      "completed": "✅ مكتمل",
+      "failed": "❌ فشل"
+    },
+    "errors": {
+      "sdkNotLoaded": "Pi SDK غير محمل. تأكد من اتصال الإنترنت.",
+      "authFailed": "فشلت المصادقة. حاول مرة أخرى.",
+      "paymentFailed": "فشلت المعاملة. تحقق من رصيدك.",
+      "invalidAmount": "المبلغ غير صحيح.",
+      "networkError": "خطأ في الشبكة. حاول مرة أخرى."
+    }
+  },
   "nav": {
     "dashboard": "لوحة التحكم",
     "support": "الدعم",
-    "knowledge": "قاعدة المعرفة"
+    "knowledge": "قاعدة المعرفة",
+    "profile": "الملف الشخصي"
   }
 }
