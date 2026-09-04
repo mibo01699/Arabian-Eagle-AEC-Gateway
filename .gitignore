@@ -1,0 +1,30 @@
+# ===== السجلات =====
+logs/
+*.log
+
+# ===== Node.js =====
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ===== البيئة =====
+.env
+.env.local
+.env.*.local
+
+# ===== نظام التشغيل =====
+.DS_Store
+Thumbs.db
+
+# ===== المحررون =====
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===== البناء =====
+dist/
+build/
+*.zip
