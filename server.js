@@ -1,120 +1,55 @@
+// server.js - نسخة متوافقة تمامًا مع Vercel Serverless
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// تمكين CORS و JSON middleware
+// تمكين CORS و JSON
 app.use(cors());
 app.use(express.json());
 
-// ----- 1. App Registry المركزي (ثابت وقابل للتوسع) -----
+// ----- App Registry المركزي -----
 const APPS_REGISTRY = [
-  {
-    id: 'bigish-yer',
-    name: 'BIGISH-YER',
-    description: 'طبقة التسوية المالية الأساسية',
-    category: 'financial',
-    envKey: 'BIGISH_YER_API', // مفتاح متغير البيئة
-    healthEndpoint: '/api/health', // نقطة نهاية الصحة الافتراضية
-  },
-  {
-    id: 'aec-fund',
-    name: 'A.E.C Sovereign Fund',
-    description: 'صندوق النسر العربي السيادي (الاحتياطي والقروض)',
-    category: 'financial',
-    envKey: 'AEC_FUND_API',
-    healthEndpoint: '/api/health',
-  },
-  {
-    id: 'be-well',
-    name: 'Be-well',
-    description: 'منصة التأمين الصحي والرعاية',
-    category: 'health',
-    envKey: 'BE_WELL_API',
-    healthEndpoint: '/api/health',
-  },
-  {
-    id: 'ajyal',
-    name: 'AJYAL',
-    description: 'بروتوكول التعليم والإغاثة والرواتب',
-    category: 'social',
-    envKey: 'AJYAL_API',
-    healthEndpoint: '/api/health',
-  },
-  {
-    id: 'gav',
-    name: 'GAV',
-    description: 'طريق البخور – التجارة والخدمات اللوجستية ونقاط البيع',
-    category: 'commerce',
-    envKey: 'GAV_POS_API',
-    healthEndpoint: '/api/health',
-  },
-  {
-    id: 'suppliers-auction',
-    name: 'suppliers-auction',
-    description: 'مزاد الموردين والمشتريات الحكومية',
-    category: 'government',
-    envKey: 'AUCTION_API',
-    healthEndpoint: '/api/health',
-  },
-  {
-    id: 'cobra',
-    name: 'COBRA',
-    description: 'اتصالات الطوارئ والشبكات المرنة (eSIM، Mesh، Satellite)',
-    category: 'communications',
-    envKey: 'COBRA_API',
-    healthEndpoint: '/api/health',
-  },
-  {
-    id: 'aman',
-    name: 'AMAN',
-    description: 'بروتوكول التأمين اللامركزي الذكي (DeFi/DeIn)',
-    category: 'insurance',
-    envKey: 'AMAN_API',
-    healthEndpoint: '/api/health',
-  },
-  {
-    id: 'telcom-mobile-protocol',
-    name: 'Telcom-Mobile-Protocol',
-    description: 'بروتوكول الاتصالات الرقمية والخدمات الخلوية',
-    category: 'communications',
-    envKey: 'TELCOM_API',
-    healthEndpoint: '/api/health',
-  },
+  { id: 'bigish-yer', name: 'BIGISH-YER', description: 'طبقة التسوية المالية الأساسية', category: 'financial', envKey: 'BIGISH_YER_API' },
+  { id: 'aec-fund', name: 'A.E.C Sovereign Fund', description: 'صندوق النسر العربي السيادي', category: 'financial', envKey: 'AEC_FUND_API' },
+  { id: 'be-well', name: 'Be-well', description: 'منصة التأمين الصحي والرعاية', category: 'health', envKey: 'BE_WELL_API' },
+  { id: 'ajyal', name: 'AJYAL', description: 'بروتوكول التعليم والإغاثة والرواتب', category: 'social', envKey: 'AJYAL_API' },
+  { id: 'gav', name: 'GAV', description: 'طريق البخور – التجارة والخدمات اللوجستية', category: 'commerce', envKey: 'GAV_POS_API' },
+  { id: 'suppliers-auction', name: 'suppliers-auction', description: 'مزاد الموردين والمشتريات الحكومية', category: 'government', envKey: 'AUCTION_API' },
+  { id: 'cobra', name: 'COBRA', description: 'اتصالات الطوارئ والشبكات المرنة', category: 'communications', envKey: 'COBRA_API' },
+  { id: 'aman', name: 'AMAN', description: 'بروتوكول التأمين اللامركزي الذكي', category: 'insurance', envKey: 'AMAN_API' },
+  { id: 'telcom-mobile-protocol', name: 'Telcom-Mobile-Protocol', description: 'بروتوكول الاتصالات الرقمية', category: 'communications', envKey: 'TELCOM_API' },
 ];
 
-// ----- 2. دالة لجلب الحالة الصحية الفعلية لتطبيق واحد -----
+// ----- دالة الفحص الصحي (متوافقة مع Node.js 18+ و Vercel) -----
 async function fetchAppHealth(appConfig) {
   const baseUrl = process.env[appConfig.envKey];
-  // إذا لم يكن الرابط موجودًا، نعتبر التطبيق غير منشور
-  if (!baseUrl) {
-    return { status: 'NOT_DEPLOYED', url: null };
-  }
+  if (!baseUrl) return { status: 'NOT_DEPLOYED', url: null };
 
-  const healthUrl = `${baseUrl}${appConfig.healthEndpoint}`;
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 5000); // مهلة 5 ثوانٍ
+  const healthUrl = `${baseUrl}/api/health`;
+  const timeout = 5000; // 5 ثوانٍ
 
   try {
-    const response = await fetch(healthUrl, { signal: controller.signal });
+    // استخدام fetch العالمي (Node.js 18+)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+    
+    const response = await fetch(healthUrl, { 
+      signal: controller.signal,
+      headers: { 'Accept': 'application/json' }
+    });
     clearTimeout(timeoutId);
 
     if (response.ok) {
       return { status: 'ONLINE', url: baseUrl };
     } else {
-      // إذا كانت الاستجابة غير ناجحة (مثل 500)
       return { status: 'DEGRADED', url: baseUrl };
     }
   } catch (error) {
-    clearTimeout(timeoutId);
-    // خطأ في الاتصال أو المهلة
     return { status: 'OFFLINE', url: baseUrl };
   }
 }
 
-// ----- 3. دالة لجلب الحالة لجميع التطبيقات (مع توازي الطلبات) -----
 async function getAllAppsStatus() {
-  // نبدأ بجلب الحالة لكل تطبيق على حدة بشكل متوازي (Promise.all)
   const statusPromises = APPS_REGISTRY.map(async (app) => {
     const healthResult = await fetchAppHealth(app);
     return {
@@ -124,21 +59,17 @@ async function getAllAppsStatus() {
       category: app.category,
       url: healthResult.url,
       status: healthResult.status,
-      version: '1.0.0', // يمكن جلبها من نقطة نهاية الصحة لاحقًا
+      version: '1.0.0',
     };
   });
-
   return await Promise.all(statusPromises);
 }
 
-// ----- 4. نقاط النهاية (Endpoints) -----
-
-// نقطة نهاية الصحة للبوابة نفسها
+// ----- نقاط النهاية -----
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'UP', timestamp: new Date().toISOString() });
 });
 
-// جلب جميع التطبيقات مع حالتها
 app.get('/api/apps', async (req, res) => {
   try {
     const appsStatus = await getAllAppsStatus();
@@ -149,18 +80,14 @@ app.get('/api/apps', async (req, res) => {
   }
 });
 
-// جلب تطبيق محدد بواسطة المعرف (id)
 app.get('/api/apps/:id', async (req, res) => {
   const { id } = req.params;
   const appConfig = APPS_REGISTRY.find((app) => app.id === id);
-
-  if (!appConfig) {
-    return res.status(404).json({ error: 'App not found' });
-  }
+  if (!appConfig) return res.status(404).json({ error: 'App not found' });
 
   try {
     const healthResult = await fetchAppHealth(appConfig);
-    const appDetail = {
+    res.status(200).json({
       id: appConfig.id,
       name: appConfig.name,
       description: appConfig.description,
@@ -168,40 +95,36 @@ app.get('/api/apps/:id', async (req, res) => {
       url: healthResult.url,
       status: healthResult.status,
       version: '1.0.0',
-    };
-    res.status(200).json(appDetail);
+    });
   } catch (error) {
-    console.error(`Error fetching status for app ${id}:`, error);
     res.status(500).json({ error: 'Failed to fetch app status' });
   }
 });
 
-// نقطة نهاية الحالة العامة للمنظومة
 app.get('/api/status', async (req, res) => {
   try {
     const appsStatus = await getAllAppsStatus();
     const onlineCount = appsStatus.filter((app) => app.status === 'ONLINE').length;
-    const totalCount = appsStatus.length;
-
     res.status(200).json({
-      overallStatus: onlineCount === totalCount ? 'HEALTHY' : 'DEGRADED',
+      overallStatus: onlineCount === appsStatus.length ? 'HEALTHY' : 'DEGRADED',
       online: onlineCount,
-      total: totalCount,
+      total: appsStatus.length,
       apps: appsStatus,
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('Error fetching overall status:', error);
     res.status(500).json({ error: 'Failed to fetch overall status' });
   }
 });
 
-// ----- 5. تشغيل الخادم -----
-app.listen(PORT, () => {
-  console.log(`🚀 Arabian Eagle AEC Gateway running on port ${PORT}`);
-  console.log(`📋 App Registry loaded with ${APPS_REGISTRY.length} applications.`);
-  console.log('⚡ Set environment variables (e.g., BIGISH_YER_API) to enable health checks.');
-});
-
-// تصدير التطبيق لـ Vercel (للاستخدام في بيئة Serverless)
+// ----- تصدير لـ Vercel (يجب أن يكون بهذا الشكل) -----
 module.exports = app;
+
+// تشغيل محلي (لن يُستخدم في Vercel)
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Gateway running on port ${PORT}`);
+    console.log(`📋 ${APPS_REGISTRY.length} applications registered`);
+  });
+}
