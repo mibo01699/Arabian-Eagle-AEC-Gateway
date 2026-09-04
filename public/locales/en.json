@@ -41,10 +41,63 @@
     "switchedToEnglish": "Switched to English",
     "refreshSuccess": "Data refreshed successfully",
     "refreshFailed": "Failed to refresh data. Check your internet connection.",
-    "appNotDeployed": "This application is not deployed yet"
+    "appNotDeployed": "This application is not deployed yet",
+    "support": {
+      "ticketCreated": "Ticket created successfully. You will be contacted soon.",
+      "ticketFailed": "Failed to create ticket. Please try again.",
+      "messageSent": "Your message has been sent successfully.",
+      "messageFailed": "Failed to send message. Please try again."
+    }
   },
   "buttons": {
     "refresh": "Refresh",
-    "language": "Toggle Language"
+    "language": "Toggle Language",
+    "support": "Support Center",
+    "submit": "Submit",
+    "close": "Close",
+    "chat": "Chat"
+  },
+  "support": {
+    "title": "🦅 Support Center",
+    "subtitle": "We're here to help. Choose your preferred way to connect.",
+    "faq": "FAQ",
+    "chat": "Live Chat",
+    "ticket": "Support Ticket",
+    "contact": "Contact Us",
+    "aiAssistant": "AI Assistant",
+    "humanSupport": "Human Support",
+    "chatPlaceholder": "Type your question here...",
+    "ticketName": "Full Name",
+    "ticketEmail": "Email",
+    "ticketSubject": "Subject",
+    "ticketMessage": "Message",
+    "ticketPriority": "Priority",
+    "priorityLow": "Low",
+    "priorityMedium": "Medium",
+    "priorityHigh": "High",
+    "submitTicket": "Create Ticket",
+    "startChat": "Start Chat",
+    "typeMessage": "Type your message...",
+    "send": "Send",
+    "connecting": "Connecting...",
+    "online": "Online",
+    "offline": "Offline",
+    "noMessages": "No messages yet. Start the conversation!",
+    "faqList": {
+      "q1": "What is AEC Gateway?",
+      "a1": "AEC Gateway is the unified sovereign gateway connecting nine decentralized applications within the Arabian Eagle Technology ecosystem.",
+      "q2": "How do I log in?",
+      "a2": "You can log in using your Pi Network account via the authentication button on the main gateway page.",
+      "q3": "What are the nine applications?",
+      "a3": "The nine applications are: BIGISH-YER, A.E.C Sovereign Fund, Be-well, AJYAL, GAV, suppliers-auction, COBRA, AMAN, Telcom-Mobile-Protocol.",
+      "q4": "How do I report an issue?",
+      "a4": "You can use the support ticket form or live chat on this page.",
+      "q5": "Is the gateway secure?",
+      "a5": "Yes, the gateway implements top security standards including CSP, XSS protection, CSRF protection, and input validation."
+    }
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "support": "Support"
   }
 }
