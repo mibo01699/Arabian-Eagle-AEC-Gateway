@@ -1,5 +1,5 @@
 /**
- * dashboard.js - منطق عرض لوحة التحكم وتحديثها
+ * dashboard.js - مع دعم i18n
  */
 
 // ===== عناصر DOM =====
@@ -18,28 +18,56 @@ const elements = {
 };
 
 // ===== حالة التطبيق =====
-let currentLanguage = 'ar'; // 'ar' أو 'en'
 let refreshInterval = null;
 
-// ===== دوال العرض =====
+// ===== دالة لتحديث النصوص المترجمة في DOM =====
+function updateI18nElements() {
+  // تحديث جميع العناصر التي تحمل data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+    const key = element.dataset.i18n;
+    const translation = i18n.t(key);
+    if (translation && translation !== key) {
+      element.textContent = translation;
+    }
+  });
+  
+  // تحديث عناوين الأدوات (tooltips)
+  document.querySelectorAll('[data-i18n-tooltip]').forEach(element => {
+    const key = element.dataset.i18nTooltip;
+    const translation = i18n.t(key);
+    if (translation && translation !== key) {
+      element.title = translation;
+    }
+  });
+}
 
-/**
- * عرض بطاقات التطبيقات في الشبكة
- */
+// ===== عرض بطاقات التطبيقات مع الترجمة =====
 function renderApps(apps) {
   if (!apps || apps.length === 0) {
     elements.appsGrid.innerHTML = `
       <div class="no-apps">
         <div class="no-apps-icon">📭</div>
-        <p>لا توجد تطبيقات مسجلة حالياً</p>
+        <p>${i18n.t('appCard.noDescription')}</p>
       </div>
     `;
     return;
   }
 
+  // ترجمة أسماء الفئات
+  const categoryMap = {
+    'financial': i18n.t('appCard.category.financial'),
+    'health': i18n.t('appCard.category.health'),
+    'social': i18n.t('appCard.category.social'),
+    'commerce': i18n.t('appCard.category.commerce'),
+    'government': i18n.t('appCard.category.government'),
+    'communications': i18n.t('appCard.category.communications'),
+    'insurance': i18n.t('appCard.category.insurance'),
+  };
+
   elements.appsGrid.innerHTML = apps.map(app => {
     const statusClass = app.status.toLowerCase();
     const badgeClass = `badge-${statusClass}`;
+    const categoryName = categoryMap[app.category] || i18n.t('appCard.category.general');
     
     return `
       <div class="app-card status-${statusClass}" data-app-id="${app.id}">
@@ -48,16 +76,16 @@ function renderApps(apps) {
           <span class="app-status-badge ${badgeClass}">${app.status}</span>
         </div>
         <div class="app-name">${app.name}</div>
-        <div class="app-description">${app.description || 'لا يوجد وصف'}</div>
+        <div class="app-description">${app.description || i18n.t('appCard.noDescription')}</div>
         <div class="app-meta">
-          <span class="app-category">${app.category || 'عام'}</span>
-          <span class="app-url" title="${app.url || 'غير منشور'}">${app.url ? new URL(app.url).hostname : 'غير منشور'}</span>
+          <span class="app-category">${categoryName}</span>
+          <span class="app-url" title="${app.url || i18n.t('appCard.notDeployed')}">${app.url ? new URL(app.url).hostname : i18n.t('appCard.notDeployed')}</span>
         </div>
       </div>
     `;
   }).join('');
 
-  // إضافة مستمعي أحداث للبطاقات (فتح التطبيق عند النقر)
+  // إضافة مستمعي أحداث للبطاقات
   document.querySelectorAll('.app-card').forEach(card => {
     card.addEventListener('click', () => {
       const appId = card.dataset.appId;
@@ -65,16 +93,13 @@ function renderApps(apps) {
       if (app && app.url) {
         window.open(app.url, '_blank');
       } else {
-        // إظهار تنبيه إذا كان التطبيق غير منشور
-        showToast('هذا التطبيق غير منشور بعد', 'warning');
+        showToast(i18n.t('toast.appNotDeployed'), 'warning');
       }
     });
   });
 }
 
-/**
- * تحديث بطاقات الملخص
- */
+// ===== تحديث بطاقات الملخص =====
 function updateSummary(summary) {
   if (!summary) return;
   
@@ -84,77 +109,70 @@ function updateSummary(summary) {
   elements.offlineApps.textContent = summary.offline || 0;
 }
 
-/**
- * تحديث حالة المنظومة العامة
- */
+// ===== تحديث حالة المنظومة العامة =====
 function updateSystemStatus(overallStatus, timestamp) {
   const statusMap = {
-    'HEALTHY': { dot: 'healthy', text: '✅ المنظومة تعمل بكامل طاقتها', emoji: '✅' },
-    'DEGRADED': { dot: 'degraded', text: '⚠️ بعض التطبيقات تعاني من مشاكل', emoji: '⚠️' },
-    'OFFLINE': { dot: 'offline', text: '❌ المنظومة غير متصلة', emoji: '❌' },
+    'HEALTHY': { dot: 'healthy', text: i18n.t('status.healthy') },
+    'DEGRADED': { dot: 'degraded', text: i18n.t('status.degraded') },
+    'OFFLINE': { dot: 'offline', text: i18n.t('status.offline') },
   };
 
   const status = statusMap[overallStatus] || statusMap['DEGRADED'];
   
-  // تحديث النقطة
   elements.statusDot.className = `status-dot ${status.dot}`;
-  
-  // تحديث النص
   elements.statusText.textContent = status.text;
   
-  // تحديث الوقت
   if (timestamp) {
     const date = new Date(timestamp);
-    elements.lastUpdate.textContent = `آخر تحديث: ${date.toLocaleTimeString('ar-SA')}`;
+    const locale = i18n.getLocale();
+    const timeStr = date.toLocaleTimeString(locale === 'ar' ? 'ar-SA' : 'en-US');
+    elements.lastUpdate.textContent = `${i18n.t('status.lastUpdate')}: ${timeStr}`;
   }
 }
 
-/**
- * تحديث لوحة التحكم بالكامل
- */
+// ===== تحديث لوحة التحكم =====
 async function refreshDashboard() {
   try {
-    // إظهار حالة التحميل
     elements.refreshBtn.querySelector('i').className = 'fas fa-spinner fa-spin';
     elements.refreshBtn.disabled = true;
     
-    // جلب البيانات
     const statusData = await fetchSystemStatus();
     
-    // تحديث العناصر
     renderApps(statusData.apps);
     updateSummary(statusData.summary);
     updateSystemStatus(statusData.overallStatus, statusData.timestamp);
     
-    // إعادة زر التحديث
     elements.refreshBtn.querySelector('i').className = 'fas fa-sync-alt';
     elements.refreshBtn.disabled = false;
+    
+    showToast(i18n.t('toast.refreshSuccess'), 'info');
     
   } catch (error) {
     console.error('Failed to refresh dashboard:', error);
     elements.refreshBtn.querySelector('i').className = 'fas fa-sync-alt';
     elements.refreshBtn.disabled = false;
-    
-    // عرض رسالة خطأ
-    showToast('فشل تحديث البيانات. تأكد من اتصال الإنترنت.', 'error');
+    showToast(i18n.t('toast.refreshFailed'), 'error');
   }
 }
 
-// ===== إشعارات مؤقتة (Toast) =====
-
+// ===== إشعارات =====
 function showToast(message, type = 'info') {
-  // إنشاء عنصر الإشعار
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
   toast.textContent = message;
   
-  // أنماط الإشعار
+  const colors = {
+    error: '#fc8181',
+    warning: '#ed8936',
+    info: '#48bb78'
+  };
+  
   Object.assign(toast.style, {
     position: 'fixed',
     bottom: '20px',
     left: '50%',
     transform: 'translateX(-50%)',
-    background: type === 'error' ? '#fc8181' : type === 'warning' ? '#ed8936' : '#48bb78',
+    background: colors[type] || colors.info,
     color: '#fff',
     padding: '12px 24px',
     borderRadius: '12px',
@@ -170,13 +188,11 @@ function showToast(message, type = 'info') {
   
   document.body.appendChild(toast);
   
-  // ظهور الإشعار
   requestAnimationFrame(() => {
     toast.style.opacity = '1';
     toast.style.transform = 'translateX(-50%) translateY(0)';
   });
   
-  // إخفاء الإشعار بعد 3 ثوانٍ
   setTimeout(() => {
     toast.style.opacity = '0';
     toast.style.transform = 'translateX(-50%) translateY(20px)';
@@ -185,72 +201,69 @@ function showToast(message, type = 'info') {
 }
 
 // ===== تبديل اللغة =====
-
-function toggleLanguage() {
-  currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
-  document.documentElement.lang = currentLanguage;
-  document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+async function toggleLanguage() {
+  const currentLocale = i18n.getLocale();
+  const newLocale = currentLocale === 'ar' ? 'en' : 'ar';
   
-  // تحديث النص على الزر
-  elements.langToggle.innerHTML = `<i class="fas fa-${currentLanguage === 'ar' ? 'globe' : 'globe-americas'}"></i>`;
+  await i18n.setLocale(newLocale);
   
-  // حفظ التفضيل
+  // تحديث أيقونة الزر
+  elements.langToggle.innerHTML = `<i class="fas fa-${newLocale === 'ar' ? 'globe' : 'globe-americas'}"></i>`;
+  
+  // تحديث جميع النصوص المترجمة في الصفحة
+  updateI18nElements();
+  
+  // إعادة عرض التطبيقات مع اللغة الجديدة
   try {
-    localStorage.setItem('preferred-language', currentLanguage);
-  } catch (e) {
-    // تجاهل أخطاء التخزين المحلي
+    const statusData = await fetchSystemStatus();
+    renderApps(statusData.apps);
+    updateSystemStatus(statusData.overallStatus, statusData.timestamp);
+  } catch (error) {
+    console.error('Failed to refresh after language change:', error);
   }
   
-  showToast(currentLanguage === 'ar' ? 'تم التبديل إلى العربية' : 'Switched to English', 'info');
+  showToast(i18n.t(`toast.switchedTo${newLocale === 'ar' ? 'Arabic' : 'English'}`), 'info');
 }
 
 // ===== بدء التحديث التلقائي =====
-
 function startAutoRefresh(intervalSeconds = 30) {
-  if (refreshInterval) {
-    clearInterval(refreshInterval);
-  }
-  
-  // تحديث فوري عند البداية
+  if (refreshInterval) clearInterval(refreshInterval);
   refreshDashboard();
-  
-  // تحديث دوري
   refreshInterval = setInterval(refreshDashboard, intervalSeconds * 1000);
 }
 
 // ===== تهيئة لوحة التحكم =====
-
 async function initDashboard() {
-  // استعادة تفضيل اللغة
-  try {
-    const savedLang = localStorage.getItem('preferred-language');
-    if (savedLang === 'en' || savedLang === 'ar') {
-      currentLanguage = savedLang;
-      document.documentElement.lang = currentLanguage;
-      document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
-    }
-  } catch (e) {
-    // تجاهل
-  }
+  // تهيئة i18n أولاً
+  await i18n.init();
   
   // تحديث أيقونة اللغة
-  elements.langToggle.innerHTML = `<i class="fas fa-${currentLanguage === 'ar' ? 'globe' : 'globe-americas'}"></i>`;
+  const currentLocale = i18n.getLocale();
+  elements.langToggle.innerHTML = `<i class="fas fa-${currentLocale === 'ar' ? 'globe' : 'globe-americas'}"></i>`;
+  
+  // تحديث النصوص المترجمة
+  updateI18nElements();
   
   // مستمعي الأحداث
   elements.refreshBtn.addEventListener('click', refreshDashboard);
   elements.langToggle.addEventListener('click', toggleLanguage);
   
+  // إضافة مراقب لتحديث النصوص عند تغيير اللغة
+  i18n.addObserver(() => {
+    updateI18nElements();
+  });
+  
   // بدء التحديث التلقائي
   startAutoRefresh(30);
   
-  // تحديث عند عودة التركيز على الصفحة
+  // تحديث عند عودة التركيز
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) {
       refreshDashboard();
     }
   });
   
-  console.log('🦅 AEC Gateway Dashboard initialized');
+  console.log('🦅 AEC Gateway Dashboard initialized with i18n');
 }
 
 // ===== تشغيل عند تحميل الصفحة =====
