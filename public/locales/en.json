@@ -47,6 +47,10 @@
       "ticketFailed": "Failed to create ticket. Please try again.",
       "messageSent": "Your message has been sent successfully.",
       "messageFailed": "Failed to send message. Please try again."
+    },
+    "knowledge": {
+      "articleNotFound": "Article not found",
+      "searchNoResults": "No results found for your search"
     }
   },
   "buttons": {
@@ -55,7 +59,10 @@
     "support": "Support Center",
     "submit": "Submit",
     "close": "Close",
-    "chat": "Chat"
+    "chat": "Chat",
+    "search": "Search",
+    "readMore": "Read More",
+    "back": "Back"
   },
   "support": {
     "title": "🦅 Support Center",
@@ -96,8 +103,28 @@
       "a5": "Yes, the gateway implements top security standards including CSP, XSS protection, CSRF protection, and input validation."
     }
   },
+  "knowledge": {
+    "title": "📚 Knowledge Base",
+    "subtitle": "Comprehensive Guide to the Arabian Eagle Decentralized Applications Ecosystem",
+    "searchPlaceholder": "Search the knowledge base...",
+    "categories": "Categories",
+    "all": "All",
+    "articles": "Articles",
+    "noArticles": "No articles in this category",
+    "readTime": "min read",
+    "lastUpdated": "Last updated",
+    "categoryLabels": {
+      "getting-started": "Getting Started",
+      "technical": "Technical",
+      "financial": "Financial",
+      "security": "Security",
+      "troubleshooting": "Troubleshooting",
+      "integration": "Integration"
+    }
+  },
   "nav": {
     "dashboard": "Dashboard",
-    "support": "Support"
+    "support": "Support",
+    "knowledge": "Knowledge Base"
   }
 }
