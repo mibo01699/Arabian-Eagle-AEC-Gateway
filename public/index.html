@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#0a0e27">
+  <meta name="description" content="Arabian Eagle AEC Gateway - البوابة السيادية الموحدة لمنظومة النسر العربي">
+  <title>🦅 AEC Gateway</title>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  
+  <!-- Font Awesome (أيقونات) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <!-- شريط التنقل العلوي -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <span class="logo-icon">🦅</span>
+        <span class="brand-text">AEC Gateway</span>
+      </div>
+      <div class="nav-actions">
+        <button class="nav-btn" id="langToggle" aria-label="تبديل اللغة">
+          <i class="fas fa-globe"></i>
+        </button>
+        <button class="nav-btn" id="refreshBtn" aria-label="تحديث">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- المحتوى الرئيسي -->
+  <main class="main-content">
+    <!-- رأس الصفحة -->
+    <header class="page-header">
+      <h1>🦅 البوابة السيادية الموحدة</h1>
+      <p class="subtitle">مراقبة حالة التطبيقات اللامركزية التسعة</p>
+    </header>
+
+    <!-- بطاقة الملخص السريع -->
+    <section class="summary-cards" id="summaryCards">
+      <div class="summary-card total">
+        <span class="summary-icon"><i class="fas fa-cubes"></i></span>
+        <div class="summary-info">
+          <span class="summary-number" id="totalApps">9</span>
+          <span class="summary-label">إجمالي التطبيقات</span>
+        </div>
+      </div>
+      <div class="summary-card online">
+        <span class="summary-icon"><i class="fas fa-check-circle"></i></span>
+        <div class="summary-info">
+          <span class="summary-number" id="onlineApps">0</span>
+          <span class="summary-label">متصل</span>
+        </div>
+      </div>
+      <div class="summary-card degraded">
+        <span class="summary-icon"><i class="fas fa-exclamation-triangle"></i></span>
+        <div class="summary-info">
+          <span class="summary-number" id="degradedApps">0</span>
+          <span class="summary-label">متعطل جزئياً</span>
+        </div>
+      </div>
+      <div class="summary-card offline">
+        <span class="summary-icon"><i class="fas fa-times-circle"></i></span>
+        <div class="summary-info">
+          <span class="summary-number" id="offlineApps">0</span>
+          <span class="summary-label">غير متصل</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- حالة المنظومة العامة -->
+    <div class="system-status" id="systemStatus">
+      <span class="status-dot"></span>
+      <span class="status-text">جاري التحميل...</span>
+      <span class="status-time" id="lastUpdate"></span>
+    </div>
+
+    <!-- شبكة التطبيقات -->
+    <section class="apps-grid" id="appsGrid">
+      <!-- سيتم ملؤها بواسطة JavaScript -->
+    </section>
+
+    <!-- تذييل الصفحة -->
+    <footer class="page-footer">
+      <p>© 2026 <strong>Arabian Eagle Tech</strong> — جميع الحقوق محفوظة</p>
+      <p class="footer-version">الإصدار 1.0.0</p>
+    </footer>
+  </main>
+
+  <!-- JavaScript -->
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
