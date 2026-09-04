@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#0a0e27">
+  <meta name="description" content="Arabian Eagle AEC Gateway - Support Center">
+  <title>🦅 AEC Gateway - الدعم</title>
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/support.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <span class="logo-icon">🦅</span>
+        <span class="brand-text" data-i18n="app.name">AEC Gateway</span>
+      </div>
+      <div class="nav-actions">
+        <a href="/" class="nav-btn" title="لوحة التحكم" data-i18n-tooltip="nav.dashboard">
+          <i class="fas fa-home"></i>
+        </a>
+        <button class="nav-btn" id="langToggle" aria-label="تبديل اللغة" data-i18n-tooltip="buttons.language">
+          <i class="fas fa-globe"></i>
+        </button>
+        <button class="nav-btn" id="refreshBtn" aria-label="تحديث" data-i18n-tooltip="buttons.refresh">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content support-page">
+    <header class="page-header">
+      <h1 data-i18n="support.title">🦅 مركز الدعم</h1>
+      <p class="subtitle" data-i18n="support.subtitle">نحن هنا لمساعدتك. اختر طريقة التواصل المفضلة.</p>
+    </header>
+
+    <!-- خيارات الدعم -->
+    <section class="support-options">
+      <div class="support-card" data-support="faq">
+        <span class="support-icon">📖</span>
+        <h3 data-i18n="support.faq">الأسئلة الشائعة</h3>
+        <p data-i18n="support.faqList.q1">ما هي بوابة AEC؟</p>
+        <button class="support-btn" data-i18n="buttons.support">مركز الدعم</button>
+      </div>
+      <div class="support-card" data-support="chat">
+        <span class="support-icon">💬</span>
+        <h3 data-i18n="support.chat">المحادثة الفورية</h3>
+        <p data-i18n="support.aiAssistant">المساعد الذكي</p>
+        <button class="support-btn" data-i18n="buttons.chat">محادثة</button>
+      </div>
+      <div class="support-card" data-support="ticket">
+        <span class="support-icon">🎫</span>
+        <h3 data-i18n="support.ticket">تذكرة الدعم</h3>
+        <p data-i18n="support.humanSupport">الدعم البشري</p>
+        <button class="support-btn" data-i18n="buttons.submit">إرسال</button>
+      </div>
+    </section>
+
+    <!-- قسم الأسئلة الشائعة -->
+    <section id="faqSection" class="support-section">
+      <h2 data-i18n="support.faq">📖 الأسئلة الشائعة</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question" data-i18n="support.faqList.q1">ما هي بوابة AEC؟</div>
+          <div class="faq-answer" data-i18n="support.faqList.a1">بوابة AEC هي البوابة السيادية الموحدة التي تربط بين تسعة تطبيقات لامركزية تعمل ضمن منظومة النسر العربي للتقنية.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" data-i18n="support.faqList.q2">كيف يمكنني تسجيل الدخول؟</div>
+          <div class="faq-answer" data-i18n="support.faqList.a2">يمكنك تسجيل الدخول باستخدام حساب Pi Network الخاص بك عبر زر المصادقة في صفحة البوابة الرئيسية.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" data-i18n="support.faqList.q3">ما هي التطبيقات التسعة؟</div>
+          <div class="faq-answer" data-i18n="support.faqList.a3">التطبيقات التسعة هي: BIGISH-YER، A.E.C Sovereign Fund، Be-well، AJYAL، GAV، suppliers-auction، COBRA، AMAN، Telcom-Mobile-Protocol.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" data-i18n="support.faqList.q4">كيف أبلغ عن مشكلة؟</div>
+          <div class="faq-answer" data-i18n="support.faqList.a4">يمكنك استخدام نموذج تذكرة الدعم أو المحادثة الفورية في هذه الصفحة.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" data-i18n="support.faqList.q5">هل البوابة آمنة؟</div>
+          <div class="faq-answer" data-i18n="support.faqList.a5">نعم، البوابة تطبق أعلى معايير الأمان بما في ذلك CSP، منع XSS، حماية CSRF، والتحقق من جميع المدخلات.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- قسم المحادثة -->
+    <section id="chatSection" class="support-section" style="display:none;">
+      <h2 data-i18n="support.chat">💬 المحادثة الفورية</h2>
+      <div class="chat-container">
+        <div class="chat-header">
+          <span class="chat-status online" data-i18n="support.online">🟢 متصل</span>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="message bot">
+            <span class="message-text" data-i18n="support.chatPlaceholder">مرحباً! كيف يمكنني مساعدتك اليوم؟</span>
+          </div>
+        </div>
+        <div class="chat-input-container">
+          <input type="text" id="chatInput" placeholder="اكتب رسالتك..." data-i18n-placeholder="support.typeMessage">
+          <button id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- قسم تذاكر الدعم -->
+    <section id="ticketSection" class="support-section" style="display:none;">
+      <h2 data-i18n="support.ticket">🎫 تذكرة الدعم</h2>
+      <form id="ticketForm">
+        <div class="form-group">
+          <label data-i18n="support.ticketName">الاسم الكامل</label>
+          <input type="text" id="ticketName" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="support.ticketEmail">البريد الإلكتروني</label>
+          <input type="email" id="ticketEmail" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="support.ticketSubject">موضوع التذكرة</label>
+          <input type="text" id="ticketSubject" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="support.ticketPriority">الأولوية</label>
+          <select id="ticketPriority">
+            <option value="low" data-i18n="support.priorityLow">منخفضة</option>
+            <option value="medium" data-i18n="support.priorityMedium">متوسطة</option>
+            <option value="high" data-i18n="support.priorityHigh">عالية</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-i18n="support.ticketMessage">وصف المشكلة</label>
+          <textarea id="ticketMessage" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn" data-i18n="support.submitTicket">إنشاء تذكرة</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <p>© 2026 <strong>Arabian Eagle Tech</strong> — <span data-i18n="app.footer">جميع الحقوق محفوظة</span></p>
+    <p class="footer-version"><span data-i18n="app.version">الإصدار</span> 1.0.0</p>
+  </footer>
+
+  <script src="/js/i18n.js"></script>
+  <script src="/js/support.js"></script>
+</body>
+</html>
