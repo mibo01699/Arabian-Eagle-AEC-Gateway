@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+  <!-- ===== شريط التنقل ===== -->
   <nav class="navbar">
     <div class="nav-container">
       <div class="nav-brand">
@@ -19,9 +20,27 @@
         <span class="brand-text" data-i18n="app.name">AEC Gateway</span>
       </div>
       <div class="nav-actions">
+        <!-- زر الملف الشخصي (Pi Auth) -->
+        <a href="/pi-auth" class="nav-btn" title="الملف الشخصي" data-i18n-tooltip="nav.profile">
+          <i class="fas fa-user-circle"></i>
+        </a>
+        
+        <!-- زر قاعدة المعرفة -->
+        <a href="/knowledge-base" class="nav-btn" title="قاعدة المعرفة" data-i18n-tooltip="nav.knowledge">
+          <i class="fas fa-book"></i>
+        </a>
+        
+        <!-- زر مركز الدعم -->
+        <a href="/support" class="nav-btn" title="مركز الدعم" data-i18n-tooltip="nav.support">
+          <i class="fas fa-headset"></i>
+        </a>
+        
+        <!-- زر تبديل اللغة -->
         <button class="nav-btn" id="langToggle" aria-label="تبديل اللغة" data-i18n-tooltip="buttons.language">
           <i class="fas fa-globe"></i>
         </button>
+        
+        <!-- زر التحديث -->
         <button class="nav-btn" id="refreshBtn" aria-label="تحديث" data-i18n-tooltip="buttons.refresh">
           <i class="fas fa-sync-alt"></i>
         </button>
@@ -29,12 +48,15 @@
     </div>
   </nav>
 
+  <!-- ===== المحتوى الرئيسي ===== -->
   <main class="main-content">
+    <!-- رأس الصفحة -->
     <header class="page-header">
       <h1 data-i18n="app.title">🦅 البوابة السيادية الموحدة</h1>
       <p class="subtitle" data-i18n="app.subtitle">مراقبة حالة التطبيقات اللامركزية التسعة</p>
     </header>
 
+    <!-- بطاقات الملخص السريع -->
     <section class="summary-cards" id="summaryCards">
       <div class="summary-card total">
         <span class="summary-icon"><i class="fas fa-cubes"></i></span>
@@ -66,21 +88,44 @@
       </div>
     </section>
 
+    <!-- حالة المنظومة العامة -->
     <div class="system-status" id="systemStatus">
       <span class="status-dot"></span>
       <span class="status-text" data-i18n="status.loading">جاري التحميل...</span>
       <span class="status-time" id="lastUpdate"></span>
     </div>
 
-    <section class="apps-grid" id="appsGrid"></section>
+    <!-- شبكة التطبيقات -->
+    <section class="apps-grid" id="appsGrid">
+      <!-- سيتم ملؤها بواسطة JavaScript -->
+    </section>
 
+    <!-- ===== أزرار التنقل السريع (في الأسفل) ===== -->
+    <section class="quick-actions">
+      <div class="quick-actions-grid">
+        <a href="/support" class="quick-action-card">
+          <span class="quick-icon">🎧</span>
+          <span class="quick-label" data-i18n="nav.support">مركز الدعم</span>
+        </a>
+        <a href="/knowledge-base" class="quick-action-card">
+          <span class="quick-icon">📚</span>
+          <span class="quick-label" data-i18n="nav.knowledge">قاعدة المعرفة</span>
+        </a>
+        <a href="/pi-auth" class="quick-action-card">
+          <span class="quick-icon">🔐</span>
+          <span class="quick-label" data-i18n="nav.profile">الملف الشخصي</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- تذييل الصفحة -->
     <footer class="page-footer">
       <p>© 2026 <strong>Arabian Eagle Tech</strong> — <span data-i18n="app.footer">جميع الحقوق محفوظة</span></p>
       <p class="footer-version"><span data-i18n="app.version">الإصدار</span> 1.0.0</p>
     </footer>
   </main>
 
-  <!-- JavaScript -->
+  <!-- ===== JavaScript ===== -->
   <script src="/js/i18n.js"></script>
   <script src="/js/api.js"></script>
   <script src="/js/dashboard.js"></script>
