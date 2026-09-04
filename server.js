@@ -1,50 +1,34 @@
+// server.js
 const express = require('express');
 const cors = require('cors');
-const path = require('path'); // مهم لخدمة الملفات الثابتة
+const path = require('path');
 const app = express();
 
-// تمكين CORS و JSON
 app.use(cors());
 app.use(express.json());
 
-// ----- خدمة الملفات الثابتة (لـ index.html وملفات الواجهة) -----
-// هذا السطر يخبر Express بخدمة الملفات من المجلد الحالي
-app.use(express.static(__dirname));
+// ----- خدمة الملفات الثابتة من مجلد public -----
+app.use(express.static(path.join(__dirname, 'public')));
 
-// ----- مسار الجذر (الصفحة الرئيسية) -----
+// ----- مسار الجذر يخدم index.html من public -----
 app.get('/', (req, res) => {
-  // محاولة إرسال index.html، وإذا لم يوجد نرسل رسالة JSON
-  res.sendFile(path.join(__dirname, 'index.html'), (err) => {
-    if (err) {
-      // إذا لم يوجد index.html، نرسل رسالة افتراضية
-      res.status(200).json({
-        message: '🦅 Arabian Eagle AEC Gateway is running!',
-        version: '1.0.0',
-        endpoints: {
-          health: '/api/health',
-          apps: '/api/apps',
-          status: '/api/status'
-        },
-        documentation: 'https://github.com/mibo01699/Arabian-Eagle-AEC-Gateway'
-      });
-    }
-  });
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// ----- App Registry المركزي -----
+// ----- App Registry (نفس الكود السابق مع تحديث طفيف) -----
 const APPS_REGISTRY = [
-  { id: 'bigish-yer', name: 'BIGISH-YER', description: 'طبقة التسوية المالية الأساسية', category: 'financial', envKey: 'BIGISH_YER_API' },
-  { id: 'aec-fund', name: 'A.E.C Sovereign Fund', description: 'صندوق النسر العربي السيادي', category: 'financial', envKey: 'AEC_FUND_API' },
-  { id: 'be-well', name: 'Be-well', description: 'منصة التأمين الصحي والرعاية', category: 'health', envKey: 'BE_WELL_API' },
-  { id: 'ajyal', name: 'AJYAL', description: 'بروتوكول التعليم والإغاثة والرواتب', category: 'social', envKey: 'AJYAL_API' },
-  { id: 'gav', name: 'GAV', description: 'طريق البخور – التجارة والخدمات اللوجستية', category: 'commerce', envKey: 'GAV_POS_API' },
-  { id: 'suppliers-auction', name: 'suppliers-auction', description: 'مزاد الموردين والمشتريات الحكومية', category: 'government', envKey: 'AUCTION_API' },
-  { id: 'cobra', name: 'COBRA', description: 'اتصالات الطوارئ والشبكات المرنة', category: 'communications', envKey: 'COBRA_API' },
-  { id: 'aman', name: 'AMAN', description: 'بروتوكول التأمين اللامركزي الذكي', category: 'insurance', envKey: 'AMAN_API' },
-  { id: 'telcom-mobile-protocol', name: 'Telcom-Mobile-Protocol', description: 'بروتوكول الاتصالات الرقمية', category: 'communications', envKey: 'TELCOM_API' },
+  { id: 'bigish-yer', name: 'BIGISH-YER', description: 'طبقة التسوية المالية الأساسية', category: 'financial', envKey: 'BIGISH_YER_API', icon: '💰' },
+  { id: 'aec-fund', name: 'A.E.C Sovereign Fund', description: 'صندوق النسر العربي السيادي', category: 'financial', envKey: 'AEC_FUND_API', icon: '🏦' },
+  { id: 'be-well', name: 'Be-well', description: 'منصة التأمين الصحي والرعاية', category: 'health', envKey: 'BE_WELL_API', icon: '🏥' },
+  { id: 'ajyal', name: 'AJYAL', description: 'بروتوكول التعليم والإغاثة والرواتب', category: 'social', envKey: 'AJYAL_API', icon: '📚' },
+  { id: 'gav', name: 'GAV', description: 'طريق البخور – التجارة والخدمات اللوجستية', category: 'commerce', envKey: 'GAV_POS_API', icon: '🛍️' },
+  { id: 'suppliers-auction', name: 'Suppliers Auction', description: 'مزاد الموردين والمشتريات الحكومية', category: 'government', envKey: 'AUCTION_API', icon: '🔨' },
+  { id: 'cobra', name: 'COBRA', description: 'اتصالات الطوارئ والشبكات المرنة', category: 'communications', envKey: 'COBRA_API', icon: '📡' },
+  { id: 'aman', name: 'AMAN', description: 'بروتوكول التأمين اللامركزي الذكي', category: 'insurance', envKey: 'AMAN_API', icon: '🛡️' },
+  { id: 'telcom-mobile-protocol', name: 'Telcom Protocol', description: 'بروتوكول الاتصالات الرقمية والخدمات الخلوية', category: 'communications', envKey: 'TELCOM_API', icon: '📱' },
 ];
 
-// ----- دالة الفحص الصحي (متوافقة مع Vercel) -----
+// ----- دوال الفحص الصحي (نفس الكود السابق) -----
 async function fetchAppHealth(appConfig) {
   const baseUrl = process.env[appConfig.envKey];
   if (!baseUrl) return { status: 'NOT_DEPLOYED', url: null };
@@ -80,6 +64,7 @@ async function getAllAppsStatus() {
       name: app.name,
       description: app.description,
       category: app.category,
+      icon: app.icon || '📦',
       url: healthResult.url,
       status: healthResult.status,
       version: '1.0.0',
@@ -88,7 +73,7 @@ async function getAllAppsStatus() {
   return await Promise.all(statusPromises);
 }
 
-// ----- نقاط النهاية API -----
+// ----- نقاط النهاية API (نفس الكود السابق) -----
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'UP', timestamp: new Date().toISOString() });
 });
@@ -115,6 +100,7 @@ app.get('/api/apps/:id', async (req, res) => {
       name: appConfig.name,
       description: appConfig.description,
       category: appConfig.category,
+      icon: appConfig.icon || '📦',
       url: healthResult.url,
       status: healthResult.status,
       version: '1.0.0',
@@ -128,14 +114,28 @@ app.get('/api/status', async (req, res) => {
   try {
     const appsStatus = await getAllAppsStatus();
     const onlineCount = appsStatus.filter((app) => app.status === 'ONLINE').length;
+    const degradedCount = appsStatus.filter((app) => app.status === 'DEGRADED').length;
+    const offlineCount = appsStatus.filter((app) => app.status === 'OFFLINE').length;
+    const notDeployedCount = appsStatus.filter((app) => app.status === 'NOT_DEPLOYED').length;
+
+    let overallStatus = 'HEALTHY';
+    if (offlineCount > 0 || degradedCount > 0) overallStatus = 'DEGRADED';
+    if (offlineCount === appsStatus.length) overallStatus = 'OFFLINE';
+
     res.status(200).json({
-      overallStatus: onlineCount === appsStatus.length ? 'HEALTHY' : 'DEGRADED',
-      online: onlineCount,
-      total: appsStatus.length,
+      overallStatus,
+      summary: {
+        total: appsStatus.length,
+        online: onlineCount,
+        degraded: degradedCount,
+        offline: offlineCount,
+        notDeployed: notDeployedCount,
+      },
       apps: appsStatus,
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
+    console.error('Error fetching overall status:', error);
     res.status(500).json({ error: 'Failed to fetch overall status' });
   }
 });
