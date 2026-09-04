@@ -1,11 +1,35 @@
-// server.js - نسخة متوافقة تمامًا مع Vercel Serverless
 const express = require('express');
 const cors = require('cors');
+const path = require('path'); // مهم لخدمة الملفات الثابتة
 const app = express();
 
 // تمكين CORS و JSON
 app.use(cors());
 app.use(express.json());
+
+// ----- خدمة الملفات الثابتة (لـ index.html وملفات الواجهة) -----
+// هذا السطر يخبر Express بخدمة الملفات من المجلد الحالي
+app.use(express.static(__dirname));
+
+// ----- مسار الجذر (الصفحة الرئيسية) -----
+app.get('/', (req, res) => {
+  // محاولة إرسال index.html، وإذا لم يوجد نرسل رسالة JSON
+  res.sendFile(path.join(__dirname, 'index.html'), (err) => {
+    if (err) {
+      // إذا لم يوجد index.html، نرسل رسالة افتراضية
+      res.status(200).json({
+        message: '🦅 Arabian Eagle AEC Gateway is running!',
+        version: '1.0.0',
+        endpoints: {
+          health: '/api/health',
+          apps: '/api/apps',
+          status: '/api/status'
+        },
+        documentation: 'https://github.com/mibo01699/Arabian-Eagle-AEC-Gateway'
+      });
+    }
+  });
+});
 
 // ----- App Registry المركزي -----
 const APPS_REGISTRY = [
@@ -20,16 +44,15 @@ const APPS_REGISTRY = [
   { id: 'telcom-mobile-protocol', name: 'Telcom-Mobile-Protocol', description: 'بروتوكول الاتصالات الرقمية', category: 'communications', envKey: 'TELCOM_API' },
 ];
 
-// ----- دالة الفحص الصحي (متوافقة مع Node.js 18+ و Vercel) -----
+// ----- دالة الفحص الصحي (متوافقة مع Vercel) -----
 async function fetchAppHealth(appConfig) {
   const baseUrl = process.env[appConfig.envKey];
   if (!baseUrl) return { status: 'NOT_DEPLOYED', url: null };
 
   const healthUrl = `${baseUrl}/api/health`;
-  const timeout = 5000; // 5 ثوانٍ
+  const timeout = 5000;
 
   try {
-    // استخدام fetch العالمي (Node.js 18+)
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
     
@@ -65,7 +88,7 @@ async function getAllAppsStatus() {
   return await Promise.all(statusPromises);
 }
 
-// ----- نقاط النهاية -----
+// ----- نقاط النهاية API -----
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'UP', timestamp: new Date().toISOString() });
 });
@@ -117,10 +140,10 @@ app.get('/api/status', async (req, res) => {
   }
 });
 
-// ----- تصدير لـ Vercel (يجب أن يكون بهذا الشكل) -----
+// ----- تصدير لـ Vercel -----
 module.exports = app;
 
-// تشغيل محلي (لن يُستخدم في Vercel)
+// تشغيل محلي
 if (require.main === module) {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
