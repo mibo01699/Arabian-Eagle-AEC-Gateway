@@ -51,6 +51,13 @@
     "knowledge": {
       "articleNotFound": "Article not found",
       "searchNoResults": "No results found for your search"
+    },
+    "pi": {
+      "authSuccess": "Successfully logged in with Pi Network",
+      "authFailed": "Failed to log in with Pi Network",
+      "paymentSuccess": "Payment successful",
+      "paymentFailed": "Payment failed",
+      "paymentCancelled": "Payment cancelled"
     }
   },
   "buttons": {
@@ -62,7 +69,10 @@
     "chat": "Chat",
     "search": "Search",
     "readMore": "Read More",
-    "back": "Back"
+    "back": "Back",
+    "login": "Login",
+    "logout": "Logout",
+    "pay": "Pay"
   },
   "support": {
     "title": "🦅 Support Center",
@@ -122,9 +132,40 @@
       "integration": "Integration"
     }
   },
+  "pi": {
+    "title": "🔐 Pi Network Authentication",
+    "subtitle": "Log in using your Pi Network account",
+    "loginButton": "Login with Pi Network",
+    "logoutButton": "Logout",
+    "userInfo": "User Information",
+    "username": "Username",
+    "walletAddress": "Wallet Address",
+    "balance": "Balance",
+    "paymentTitle": "💳 Confirm Payment",
+    "paymentAmount": "Amount",
+    "paymentDescription": "Description",
+    "paymentMemo": "Memo",
+    "confirmPayment": "Confirm Payment",
+    "cancelPayment": "Cancel",
+    "status": {
+      "authenticated": "✅ Authenticated",
+      "unauthenticated": "❌ Unauthenticated",
+      "pending": "⏳ Pending",
+      "completed": "✅ Completed",
+      "failed": "❌ Failed"
+    },
+    "errors": {
+      "sdkNotLoaded": "Pi SDK not loaded. Check your internet connection.",
+      "authFailed": "Authentication failed. Please try again.",
+      "paymentFailed": "Payment failed. Check your balance.",
+      "invalidAmount": "Invalid amount.",
+      "networkError": "Network error. Please try again."
+    }
+  },
   "nav": {
     "dashboard": "Dashboard",
     "support": "Support",
-    "knowledge": "Knowledge Base"
+    "knowledge": "Knowledge Base",
+    "profile": "Profile"
   }
 }
