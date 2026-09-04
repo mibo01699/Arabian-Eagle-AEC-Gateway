@@ -454,3 +454,86 @@ app.post('/api/auth/pi', validatePiAuth, handleValidationErrors, async (req, res
     });
   }
 });
+const APPS_REGISTRY = [
+  {
+    id: 'bigish-yer',
+    name: 'BIGISH-YER',
+    description: 'طبقة التسوية المالية الأساسية ومنظومة الريال الرقمي اليمني',
+    category: 'financial',
+    envKey: 'BIGISH_YER_API',
+    icon: '💰',
+    healthEndpoint: '/api/health'
+  },
+  {
+    id: 'aec-fund',
+    name: 'A.E.C Sovereign Fund',
+    description: 'صندوق النسر العربي السيادي (الاحتياطي والقروض)',
+    category: 'financial',
+    envKey: 'FUND_API',
+    icon: '🏦',
+    healthEndpoint: '/api/health'
+  },
+  {
+    id: 'be-well',
+    name: 'Be-well',
+    description: 'منصة التأمين الصحي والرعاية (تعمل على Soroban WASM)',
+    category: 'health',
+    envKey: 'BE_WELL_API',
+    icon: '🏥',
+    healthEndpoint: '/api/health'
+  },
+  {
+    id: 'ajyal',
+    name: 'AJYAL',
+    description: 'بروتوكول التعليم والإغاثة والرواتب (الإصدار 3.0.0)',
+    category: 'social',
+    envKey: 'AJYAL_API',
+    icon: '📚',
+    healthEndpoint: '/api/health'
+  },
+  {
+    id: 'gav',
+    name: 'GAV',
+    description: 'طريق البخور – التجارة والخدمات اللوجستية ونقاط البيع',
+    category: 'commerce',
+    envKey: 'GAV_POS_API',
+    icon: '🛍️',
+    healthEndpoint: '/api/health'
+  },
+  {
+    id: 'suppliers-auction',
+    name: 'Suppliers Auction',
+    description: 'مزاد الموردين والمشتريات الحكومية (الإصدار 1.0.0)',
+    category: 'government',
+    envKey: 'AUCTION_API',
+    icon: '🔨',
+    healthEndpoint: '/api/health'
+  },
+  {
+    id: 'cobra',
+    name: 'COBRA',
+    description: 'اتصالات الطوارئ والشبكات المرنة (eSIM، Mesh، Satellite)',
+    category: 'communications',
+    envKey: 'COBRA_API',
+    icon: '📡',
+    healthEndpoint: '/api/health'
+  },
+  {
+    id: 'aman',
+    name: 'AMAN',
+    description: 'بروتوكول التأمين اللامركزي الذكي (DeFi/DeIn) مع محرك ذكاء اصطناعي',
+    category: 'insurance',
+    envKey: 'AMAN_API',
+    icon: '🛡️',
+    healthEndpoint: '/api/health'
+  },
+  {
+    id: 'telcom-mobile-protocol',
+    name: 'Telcom Protocol',
+    description: 'بروتوكول الاتصالات الرقمية والخدمات الخلوية (Web3 MVNO)',
+    category: 'communications',
+    envKey: 'TELCOM_API',
+    icon: '📱',
+    healthEndpoint: '/api/health'
+  },
+];
