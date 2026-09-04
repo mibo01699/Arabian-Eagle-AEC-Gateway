@@ -268,3 +268,21 @@ async function initDashboard() {
 
 // ===== تشغيل عند تحميل الصفحة =====
 document.addEventListener('DOMContentLoaded', initDashboard);
+// ===== مستمعي الأحداث =====
+document.addEventListener('DOMContentLoaded', async function() {
+  // ... الكود الموجود ...
+  
+  // زر التحديث
+  const refreshBtn = document.getElementById('refreshBtn');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', refreshDashboard);
+  }
+  
+  // زر اللغة
+  const langToggle = document.getElementById('langToggle');
+  if (langToggle) {
+    langToggle.addEventListener('click', toggleLanguage);
+  }
+  
+  // ... باقي الكود ...
+});
