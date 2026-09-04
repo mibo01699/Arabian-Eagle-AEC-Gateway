@@ -155,3 +155,10 @@ if (require.main === module) {
 app.get('/support', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'support.html'));
 });
+// بعد مسار الدعم (/support)
+app.get('/knowledge-base', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'knowledge-base.html'));
+});
+
+// خدمة ملفات data
+app.use('/data', express.static(path.join(__dirname, 'public', 'data')));
