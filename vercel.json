@@ -13,6 +13,7 @@
     { "src": "/", "dest": "/server.js" },
     { "src": "/support", "dest": "/server.js" },
     { "src": "/knowledge-base", "dest": "/server.js" },
+    { "src": "/pi-auth", "dest": "/server.js" },
     { "src": "/api/(.*)", "dest": "/server.js" },
     { "src": "/css/(.*)", "dest": "/public/css/$1" },
     { "src": "/js/(.*)", "dest": "/public/js/$1" },
