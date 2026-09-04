@@ -1,0 +1,50 @@
+{
+  "app": {
+    "name": "AEC Gateway",
+    "title": "🦅 البوابة السيادية الموحدة",
+    "subtitle": "مراقبة حالة التطبيقات اللامركزية التسعة",
+    "footer": "جميع الحقوق محفوظة",
+    "version": "الإصدار"
+  },
+  "summary": {
+    "total": "إجمالي التطبيقات",
+    "online": "متصل",
+    "degraded": "متعطل جزئياً",
+    "offline": "غير متصل",
+    "notDeployed": "غير منشور"
+  },
+  "status": {
+    "healthy": "✅ المنظومة تعمل بكامل طاقتها",
+    "degraded": "⚠️ بعض التطبيقات تعاني من مشاكل",
+    "offline": "❌ المنظومة غير متصلة",
+    "loading": "جاري التحميل...",
+    "lastUpdate": "آخر تحديث",
+    "unknown": "حالة غير معروفة"
+  },
+  "appCard": {
+    "noDescription": "لا يوجد وصف",
+    "notDeployed": "غير منشور",
+    "openApp": "فتح التطبيق",
+    "category": {
+      "financial": "مالي",
+      "health": "صحي",
+      "social": "اجتماعي",
+      "commerce": "تجاري",
+      "government": "حكومي",
+      "communications": "اتصالات",
+      "insurance": "تأمين",
+      "general": "عام"
+    }
+  },
+  "toast": {
+    "switchedToArabic": "تم التبديل إلى العربية",
+    "switchedToEnglish": "Switched to English",
+    "refreshSuccess": "تم تحديث البيانات بنجاح",
+    "refreshFailed": "فشل تحديث البيانات. تأكد من اتصال الإنترنت.",
+    "appNotDeployed": "هذا التطبيق غير منشور بعد"
+  },
+  "buttons": {
+    "refresh": "تحديث",
+    "language": "تبديل اللغة"
+  }
+}
