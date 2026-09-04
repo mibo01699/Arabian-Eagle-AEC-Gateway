@@ -1,75 +1,104 @@
 /**
  * api.js - دوال التواصل مع Gateway API
+ * مع دعم رؤوس الأمان والتعامل مع الأخطاء
  */
 
-// العنوان الأساسي (يتم تحديده تلقائيًا حسب البيئة)
 const API_BASE = window.location.origin;
 
-/**
- * جلب الحالة العامة للمنظومة
- * @returns {Promise<Object>} بيانات الحالة
- */
+// ===== إنشاء معرف طلب فريد =====
+function generateRequestId() {
+  return 'req_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
+
+// ===== دالة جلب آمنة =====
+async function secureFetch(endpoint, options = {}) {
+  const url = `${API_BASE}${endpoint}`;
+  const requestId = generateRequestId();
+  
+  const defaultOptions = {
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Request-ID': requestId,
+      'Accept': 'application/json',
+    },
+    credentials: 'include',
+  };
+
+  const mergedOptions = {
+    ...defaultOptions,
+    ...options,
+    headers: {
+      ...defaultOptions.headers,
+      ...options.headers,
+    },
+  };
+
+  try {
+    const response = await fetch(url, mergedOptions);
+    
+    // التحقق من رأس X-Request-ID في الاستجابة
+    const responseRequestId = response.headers.get('X-Request-ID');
+    if (responseRequestId && responseRequestId !== requestId) {
+      console.warn('Request ID mismatch detected');
+    }
+
+    if (!response.ok) {
+      let errorMessage = `HTTP error! status: ${response.status}`;
+      try {
+        const errorData = await response.json();
+        if (errorData.message) errorMessage = errorData.message;
+        if (errorData.error) errorMessage = errorData.error;
+      } catch (e) {
+        // تجاهل
+      }
+      throw new Error(errorMessage);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`API Error [${endpoint}]:`, error);
+    throw error;
+  }
+}
+
+// ===== دوال API =====
 async function fetchSystemStatus() {
-  try {
-    const response = await fetch(`${API_BASE}/api/status`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching system status:', error);
-    throw error;
-  }
+  return secureFetch('/api/status');
 }
 
-/**
- * جلب قائمة التطبيقات مع حالتها
- * @returns {Promise<Array>} مصفوفة التطبيقات
- */
 async function fetchApps() {
-  try {
-    const response = await fetch(`${API_BASE}/api/apps`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching apps:', error);
-    throw error;
-  }
+  return secureFetch('/api/apps');
 }
 
-/**
- * جلب تفاصيل تطبيق محدد
- * @param {string} appId - معرف التطبيق
- * @returns {Promise<Object>} تفاصيل التطبيق
- */
 async function fetchAppDetails(appId) {
-  try {
-    const response = await fetch(`${API_BASE}/api/apps/${appId}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error(`Error fetching app ${appId}:`, error);
-    throw error;
+  // التحقق من صحة المعرف
+  if (!appId || !/^[a-z0-9-]+$/.test(appId)) {
+    throw new Error('Invalid app ID format');
   }
+  return secureFetch(`/api/apps/${encodeURIComponent(appId)}`);
 }
 
-/**
- * جلب حالة صحة البوابة نفسها
- * @returns {Promise<Object>} حالة البوابة
- */
 async function fetchGatewayHealth() {
-  try {
-    const response = await fetch(`${API_BASE}/api/health`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching gateway health:', error);
-    throw error;
-  }
+  return secureFetch('/api/health');
+}
+
+async function authenticateWithPi(accessToken, userData) {
+  return secureFetch('/api/auth/pi', {
+    method: 'POST',
+    body: JSON.stringify({
+      accessToken,
+      user: userData,
+    }),
+  });
+}
+
+// ===== تصدير =====
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    fetchSystemStatus,
+    fetchApps,
+    fetchAppDetails,
+    fetchGatewayHealth,
+    authenticateWithPi,
+  };
 }
