@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#0a0e27">
+  <meta name="description" content="Arabian Eagle AEC Gateway - Knowledge Base">
+  <title>🦅 AEC Gateway - قاعدة المعرفة</title>
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/knowledge-base.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <span class="logo-icon">🦅</span>
+        <span class="brand-text" data-i18n="app.name">AEC Gateway</span>
+      </div>
+      <div class="nav-actions">
+        <a href="/" class="nav-btn" title="لوحة التحكم" data-i18n-tooltip="nav.dashboard">
+          <i class="fas fa-home"></i>
+        </a>
+        <a href="/support" class="nav-btn" title="مركز الدعم" data-i18n-tooltip="nav.support">
+          <i class="fas fa-headset"></i>
+        </a>
+        <button class="nav-btn" id="langToggle" aria-label="تبديل اللغة" data-i18n-tooltip="buttons.language">
+          <i class="fas fa-globe"></i>
+        </button>
+        <button class="nav-btn" id="refreshBtn" aria-label="تحديث" data-i18n-tooltip="buttons.refresh">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content knowledge-page">
+    <header class="page-header">
+      <h1 data-i18n="knowledge.title">📚 قاعدة المعرفة</h1>
+      <p class="subtitle" data-i18n="knowledge.subtitle">دليل شامل لمنظومة النسر العربي للتطبيقات اللامركزية</p>
+    </header>
+
+    <!-- شريط البحث -->
+    <div class="search-container">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="ابحث في قاعدة المعرفة..." data-i18n-placeholder="knowledge.searchPlaceholder">
+      </div>
+    </div>
+
+    <!-- التصنيفات -->
+    <section class="categories-section">
+      <h2 data-i18n="knowledge.categories">📂 التصنيفات</h2>
+      <div class="categories-tabs" id="categoriesTabs">
+        <button class="category-tab active" data-category="all" data-i18n="knowledge.all">الكل</button>
+        <button class="category-tab" data-category="getting-started" data-i18n="knowledge.categoryLabels.getting-started">بدء الاستخدام</button>
+        <button class="category-tab" data-category="technical" data-i18n="knowledge.categoryLabels.technical">تقني</button>
+        <button class="category-tab" data-category="financial" data-i18n="knowledge.categoryLabels.financial">مالي</button>
+        <button class="category-tab" data-category="security" data-i18n="knowledge.categoryLabels.security">أمني</button>
+        <button class="category-tab" data-category="troubleshooting" data-i18n="knowledge.categoryLabels.troubleshooting">استكشاف الأخطاء</button>
+        <button class="category-tab" data-category="integration" data-i18n="knowledge.categoryLabels.integration">تكامل</button>
+      </div>
+    </section>
+
+    <!-- قائمة المقالات -->
+    <section class="articles-section">
+      <h2 data-i18n="knowledge.articles">📖 المقالات</h2>
+      <div class="articles-grid" id="articlesGrid">
+        <!-- سيتم ملؤها بواسطة JavaScript -->
+      </div>
+    </section>
+
+    <!-- عرض المقال (منبثق) -->
+    <div class="article-modal" id="articleModal" style="display:none;">
+      <div class="modal-content">
+        <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+        <div class="modal-body" id="modalBody">
+          <!-- سيتم ملؤها بواسطة JavaScript -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="page-footer">
+    <p>© 2026 <strong>Arabian Eagle Tech</strong> — <span data-i18n="app.footer">جميع الحقوق محفوظة</span></p>
+    <p class="footer-version"><span data-i18n="app.version">الإصدار</span> 1.0.0</p>
+  </footer>
+
+  <script src="/js/i18n.js"></script>
+  <script src="/js/knowledge-base.js"></script>
+</body>
+</html>
