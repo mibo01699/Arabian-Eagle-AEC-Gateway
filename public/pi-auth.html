@@ -20,10 +20,10 @@
         <span class="brand-text" data-i18n="app.name">AEC Gateway</span>
       </div>
       <div class="nav-actions">
-        <a href="/" class="nav-btn" title="لوحة التحكم" data-i18n-tooltip="nav.dashboard">
+        <a href="/" class="nav-btn" title="الرئيسية">
           <i class="fas fa-home"></i>
         </a>
-        <button class="nav-btn" id="langToggle" aria-label="تبديل اللغة" data-i18n-tooltip="buttons.language">
+        <button class="nav-btn" id="langToggle" aria-label="تبديل اللغة">
           <i class="fas fa-globe"></i>
         </button>
       </div>
@@ -32,8 +32,8 @@
 
   <main class="main-content pi-page">
     <header class="page-header">
-      <h1 data-i18n="pi.title">🔐 مصادقة Pi Network</h1>
-      <p class="subtitle" data-i18n="pi.subtitle">قم بتسجيل الدخول باستخدام حساب Pi Network الخاص بك</p>
+      <h1>🔐 مصادقة Pi Network</h1>
+      <p class="subtitle">قم بتسجيل الدخول باستخدام حساب Pi Network الخاص بك</p>
     </header>
 
     <div class="pi-container" id="piContainer">
@@ -41,84 +41,50 @@
       <div class="auth-status" id="authStatus">
         <div class="status-indicator" id="statusIndicator">
           <span class="status-dot offline"></span>
-          <span class="status-label" data-i18n="pi.status.unauthenticated">❌ غير مصادق</span>
+          <span class="status-label">❌ غير مصادق</span>
         </div>
       </div>
 
       <!-- زر المصادقة -->
       <div class="auth-actions">
-        <button id="loginButton" class="pi-btn primary" data-i18n="pi.loginButton">
+        <button id="loginButton" class="pi-btn primary">
           <i class="fas fa-sign-in-alt"></i> تسجيل الدخول عبر Pi Network
         </button>
-        <button id="logoutButton" class="pi-btn secondary" style="display:none;" data-i18n="pi.logoutButton">
+        <button id="logoutButton" class="pi-btn secondary" style="display:none;">
           <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
         </button>
       </div>
 
       <!-- معلومات المستخدم -->
       <div class="user-info" id="userInfo" style="display:none;">
-        <h3 data-i18n="pi.userInfo">👤 معلومات المستخدم</h3>
+        <h3>👤 معلومات المستخدم</h3>
         <div class="info-grid">
           <div class="info-item">
-            <span class="info-label" data-i18n="pi.username">اسم المستخدم</span>
+            <span class="info-label">اسم المستخدم</span>
             <span class="info-value" id="username">-</span>
           </div>
           <div class="info-item">
-            <span class="info-label" data-i18n="pi.walletAddress">عنوان المحفظة</span>
+            <span class="info-label">عنوان المحفظة</span>
             <span class="info-value" id="walletAddress">-</span>
           </div>
           <div class="info-item">
-            <span class="info-label" data-i18n="pi.balance">الرصيد</span>
+            <span class="info-label">الرصيد</span>
             <span class="info-value" id="balance">-</span>
           </div>
-        </div>
-      </div>
-
-      <!-- نموذج الدفع -->
-      <div class="payment-section" id="paymentSection" style="display:none;">
-        <h3 data-i18n="pi.paymentTitle">💳 تأكيد الدفع</h3>
-        <form id="paymentForm">
-          <div class="form-group">
-            <label data-i18n="pi.paymentAmount">المبلغ (π)</label>
-            <input type="number" id="paymentAmount" step="0.01" min="0.01" required>
-          </div>
-          <div class="form-group">
-            <label data-i18n="pi.paymentDescription">الوصف</label>
-            <input type="text" id="paymentDescription" placeholder="وصف المعاملة">
-          </div>
-          <div class="form-group">
-            <label data-i18n="pi.paymentMemo">المذكرة</label>
-            <input type="text" id="paymentMemo" placeholder="مذكرة اختيارية">
-          </div>
-          <div class="payment-actions">
-            <button type="submit" class="pi-btn success" data-i18n="pi.confirmPayment">
-              <i class="fas fa-check"></i> تأكيد الدفع
-            </button>
-            <button type="button" class="pi-btn danger" id="cancelPayment" data-i18n="pi.cancelPayment">
-              <i class="fas fa-times"></i> إلغاء
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <!-- سجل المعاملات -->
-      <div class="transaction-history" id="transactionHistory" style="display:none;">
-        <h3>📜 سجل المعاملات</h3>
-        <div id="transactionList">
-          <p style="color: var(--text-muted);">لا توجد معاملات بعد</p>
         </div>
       </div>
     </div>
   </main>
 
   <footer class="page-footer">
-    <p>© 2026 <strong>Arabian Eagle Tech</strong> — <span data-i18n="app.footer">جميع الحقوق محفوظة</span></p>
-    <p class="footer-version"><span data-i18n="app.version">الإصدار</span> 1.0.0</p>
+    <p>© 2026 <strong>Arabian Eagle Tech</strong> — جميع الحقوق محفوظة</p>
+    <p class="footer-version">الإصدار 1.0.0</p>
   </footer>
 
-  <!-- Pi SDK (يتم تحميله من موقع Pi Network الرسمي) -->
+  <!-- Pi SDK -->
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
   
+  <!-- JavaScript -->
   <script src="/js/i18n.js"></script>
   <script src="/js/pi-sdk.js"></script>
 </body>
