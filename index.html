@@ -1,45 +1,175 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-  <title>Arabian Eagle AEC Gateway</title>
-  <!-- CSP -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://minepi.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.example.com;" />
-  <!-- ربط Font Awesome و Google Fonts لتحسين التصميم -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <style>
-    /* تصميم سيادي عصري مع دعم RTL */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Tajawal', sans-serif; background: #f5f7fa; color: #1a1a2e; transition: background 0.3s; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
-    /* ... باقي الأنماط (تم حذفها للاختصار) ... */
-    .app-card { background: white; border-radius: 16px; padding: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.2s; }
-    .app-card:hover { transform: translateY(-4px); }
-    .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-    .status-online { background: #d4edda; color: #155724; }
-    .status-offline { background: #f8d7da; color: #721c24; }
-    /* ... المزيد ... */
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabian Eagle AEC Gateway</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0d1b2a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #f0c27f, #fc5c7d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #a0aec0;
+            margin-bottom: 30px;
+        }
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .status-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        .status-card:hover {
+            transform: translateY(-5px);
+        }
+        .status-card .app-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .status-online { background: #48bb78; color: #fff; }
+        .status-degraded { background: #ed8936; color: #fff; }
+        .status-offline { background: #fc8181; color: #fff; }
+        .status-notdeployed { background: #718096; color: #fff; }
+        .status-unknown { background: #a0aec0; color: #fff; }
+        .endpoints {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .endpoints code {
+            display: block;
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #68d391;
+        }
+        .footer {
+            margin-top: 40px;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+        .footer a {
+            color: #f0c27f;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="logo"><i class="fas fa-eagle"></i> AEC Gateway</div>
-      <div class="nav-controls">
-        <button id="langToggle" aria-label="تبديل اللغة">🌐 English</button>
-        <button id="refreshBtn" aria-label="تحديث"><i class="fas fa-sync"></i></button>
-      </div>
-    </nav>
-  </header>
-  <main class="container">
-    <h1>لوحة التحكم</h1>
-    <div id="appsGrid" class="apps-grid">
-      <!-- ستُعرض البطاقات عبر JavaScript -->
+    <div class="container">
+        <div class="logo">🦅</div>
+        <h1>Arabian Eagle AEC Gateway</h1>
+        <p class="subtitle">البوابة السيادية الموحدة لمنظومة النسر العربي للتطبيقات اللامركزية</p>
+        
+        <div id="apps-status" class="status-grid">
+            <div class="status-card">
+                <div class="app-name">⏳ جاري التحميل...</div>
+            </div>
+        </div>
+
+        <div class="endpoints">
+            <h3 style="margin-bottom: 10px; color: #f0c27f;">📡 نقاط النهاية</h3>
+            <code>GET /api/health</code>
+            <code>GET /api/apps</code>
+            <code>GET /api/status</code>
+        </div>
+
+        <div class="footer">
+            <p>🚀 Developed by <a href="https://github.com/mibo01699">Arabian Eagle Tech</a></p>
+            <p style="margin-top: 5px; font-size: 0.8rem;">© 2026 جميع الحقوق محفوظة</p>
+        </div>
     </div>
-    <div id="loadingIndicator" class="loading">جاري التحميل...</div>
-    <div id="errorMessage" class="error hidden">حدث خطأ أثناء تحميل البيانات</div>
-  </main>
-  <script src="app.js"></script>
+
+    <script>
+        async function fetchAppsStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                
+                const grid = document.getElementById('apps-status');
+                grid.innerHTML = '';
+                
+                data.apps.forEach(app => {
+                    const card = document.createElement('div');
+                    card.className = 'status-card';
+                    
+                    const statusClass = app.status.toLowerCase();
+                    const statusMap = {
+                        'online': 'status-online',
+                        'degraded': 'status-degraded',
+                        'offline': 'status-offline',
+                        'not_deployed': 'status-notdeployed',
+                        'unknown': 'status-unknown'
+                    };
+                    
+                    card.innerHTML = `
+                        <div class="app-name">${app.name}</div>
+                        <span class="status-badge ${statusMap[statusClass] || 'status-unknown'}">${app.status}</span>
+                        <div style="font-size: 0.75rem; color: #a0aec0; margin-top: 8px;">${app.category || 'عام'}</div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (error) {
+                document.getElementById('apps-status').innerHTML = `
+                    <div class="status-card">
+                        <div class="app-name">⚠️ تعذر تحميل الحالة</div>
+                        <div style="font-size: 0.8rem; color: #fc8181;">يرجى المحاولة لاحقاً</div>
+                    </div>
+                `;
+            }
+        }
+        
+        // تحميل الحالة فوراً
+        fetchAppsStatus();
+        // تحديث كل 30 ثانية
+        setInterval(fetchAppsStatus, 30000);
+    </script>
 </body>
 </html>
