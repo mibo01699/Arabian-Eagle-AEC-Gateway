@@ -1,21 +1,24 @@
 {
   "name": "arabian-eagle-aec-gateway",
   "version": "1.0.0",
-  "description": "AEC Gateway - Sovereign Unified Dashboard (Sandbox/Testnet)",
+  "description": "Arabian Eagle AEC Gateway - Unified Gateway for 9 Sovereign Applications",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build": "exit 0",
-    "test": "jest --runInBand || exit 0"
+    "dev": "nodemon server.js",
+    "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.21.1"
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
   },
   "devDependencies": {
-    "jest": "^29.7.0"
+    "nodemon": "^3.0.1"
   },
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "keywords": ["gateway", "blockchain", "web3", "pi-network"],
+  "author": "Arabian Eagle Tech",
+  "license": "MIT"
 }
