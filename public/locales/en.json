@@ -1,0 +1,50 @@
+{
+  "app": {
+    "name": "AEC Gateway",
+    "title": "🦅 Unified Sovereign Gateway",
+    "subtitle": "Monitoring the Nine Decentralized Applications",
+    "footer": "All Rights Reserved",
+    "version": "Version"
+  },
+  "summary": {
+    "total": "Total Applications",
+    "online": "Online",
+    "degraded": "Degraded",
+    "offline": "Offline",
+    "notDeployed": "Not Deployed"
+  },
+  "status": {
+    "healthy": "✅ System is fully operational",
+    "degraded": "⚠️ Some applications are experiencing issues",
+    "offline": "❌ System is offline",
+    "loading": "Loading...",
+    "lastUpdate": "Last updated",
+    "unknown": "Unknown status"
+  },
+  "appCard": {
+    "noDescription": "No description",
+    "notDeployed": "Not Deployed",
+    "openApp": "Open App",
+    "category": {
+      "financial": "Financial",
+      "health": "Health",
+      "social": "Social",
+      "commerce": "Commerce",
+      "government": "Government",
+      "communications": "Communications",
+      "insurance": "Insurance",
+      "general": "General"
+    }
+  },
+  "toast": {
+    "switchedToArabic": "تم التبديل إلى العربية",
+    "switchedToEnglish": "Switched to English",
+    "refreshSuccess": "Data refreshed successfully",
+    "refreshFailed": "Failed to refresh data. Check your internet connection.",
+    "appNotDeployed": "This application is not deployed yet"
+  },
+  "buttons": {
+    "refresh": "Refresh",
+    "language": "Toggle Language"
+  }
+}
