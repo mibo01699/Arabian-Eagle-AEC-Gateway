@@ -142,3 +142,57 @@ describe('404 handling', () => {
 });
 
 console.log('✅ API tests completed');
+// ===== اختبارات مصادقة Pi =====
+describe('POST /api/auth/pi', () => {
+  test('should reject missing access token', async () => {
+    const response = await request(app)
+      .post('/api/auth/pi')
+      .send({})
+      .expect(400);
+
+    expect(response.body).toHaveProperty('error', 'Validation failed');
+    expect(response.body.details).toBeDefined();
+  });
+
+  test('should reject invalid token format', async () => {
+    const response = await request(app)
+      .post('/api/auth/pi')
+      .send({ accessToken: '123' }) // أقل من 10 أحرف
+      .expect(400);
+
+    expect(response.body).toHaveProperty('error', 'Validation failed');
+  });
+
+  test('should handle Pi API timeout gracefully', async () => {
+    // هذا الاختبار يتطلب محاكاة (mock) لدالة fetch
+    // سيتم تنفيذه في بيئة اختبار معزولة
+    const response = await request(app)
+      .post('/api/auth/pi')
+      .send({ accessToken: 'valid_token_1234567890' })
+      .expect(504); // Gateway Timeout
+
+    expect(response.body).toHaveProperty('error', 'Pi API timeout');
+  });
+
+  test('should reject invalid token from Pi API', async () => {
+    // هذا الاختبار يتطلب محاكاة (mock) لدالة fetch
+    const response = await request(app)
+      .post('/api/auth/pi')
+      .send({ accessToken: 'invalid_token' })
+      .expect(401);
+
+    expect(response.body).toHaveProperty('error', 'Invalid or expired token');
+  });
+
+  test('should authenticate successfully with valid token', async () => {
+    // هذا الاختبار يتطلب محاكاة (mock) لدالة fetch
+    const response = await request(app)
+      .post('/api/auth/pi')
+      .send({ accessToken: 'valid_token_1234567890' })
+      .expect(200);
+
+    expect(response.body).toHaveProperty('success', true);
+    expect(response.body.user).toHaveProperty('username');
+    expect(response.body.user).toHaveProperty('walletAddress');
+  });
+});
