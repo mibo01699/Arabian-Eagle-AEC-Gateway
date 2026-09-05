@@ -1,4 +1,4 @@
-/**
+2/**
  * server.js - Arabian Eagle AEC Gateway
  * بنية احترافية ونظيفة، خالية من التكرار والتعارضات
  */
@@ -305,4 +305,22 @@ if (require.main === module) {
         console.log(`📋 ${APPS_REGISTRY.length} applications registered`);
         console.log(`✅ ${READY_APPS.length} applications are ready (will show as ONLINE)`);
     });
+}
+// ===== دالة الفحص الصحي مع دعم التطبيقات الجاهزة =====
+async function fetchAppHealth(appConfig) {
+  // التطبيقات الجاهزة تظهر ONLINE مباشرة (بدون فحص)
+  if (READY_APPS.includes(appConfig.id)) {
+    return {
+      status: 'ONLINE',
+      url: process.env[appConfig.envKey] || null,
+    };
+  }
+
+  // باقي التطبيقات (غير الجاهزة)
+  const baseUrl = process.env[appConfig.envKey];
+  if (!baseUrl) {
+    return { status: 'NOT_DEPLOYED', url: null };
+  }
+
+  // ... باقي منطق الفحص
 }
