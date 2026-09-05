@@ -1,12 +1,20 @@
+
 # 🦅 Arabian Eagle AEC Gateway
 
 البوابة السيادية الموحدة لمنظومة النسر العربي للتطبيقات اللامركزية (AEC Gateway).
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-green.svg)](https://nodejs.org/)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black.svg)](https://vercel.com/)
 
 ---
 
 ## 📖 نبذة عن المشروع
 
 **Arabian Eagle AEC Gateway** هي البوابة الأم التي تربط وتدير وتسوي بين **تسعة تطبيقات سيادية** تعمل ضمن منظومة النسر العربي للتقنية (A.E.C). توفر البوابة واجهة موحدة (Dashboard) لعرض حالة جميع التطبيقات، وإجراء عمليات المصادقة، وتنفيذ المعاملات المالية عبر شبكة Pi Network، بالإضافة إلى توفير طبقة مقاصة مركزية آمنة.
+
+
+---
 
 ### 🧭 الخريطة البيئية للتطبيقات التسعة مع روابط النشر
 
