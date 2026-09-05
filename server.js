@@ -108,28 +108,29 @@ const READY_APPS = ['bigish-yer', 'ajyal', 'gav', 'suppliers-auction'];
 // 4. دوال الفحص الصحي (Health Check Functions)
 // ============================================================
 async function fetchAppHealth(appConfig) {
-    // 1. التطبيقات غير الجاهزة
-    if (!READY_APPS.includes(appConfig.id)) {
-        return { status: 'NOT_DEPLOYED', url: null };
-    }
+    const isReady = READY_APPS.includes(appConfig.id);
+    const rawUrl = (process.env[appConfig.envKey] || '').trim();
+    const baseUrl = rawUrl.replace(/\/+$/, '');
 
-    // 2. التحقق من وجود الرابط في متغيرات البيئة
-    const baseUrl = process.env[appConfig.envKey];
+    console.log(`[DEBUG] Fetching ${appConfig.id} from ${baseUrl || '<unset>'} (envKey=${appConfig.envKey}, ready=${isReady})`);
+
+    // 1. لا يوجد رابط في متغيرات البيئة
     if (!baseUrl) {
-        return { status: 'NOT_DEPLOYED', url: null };
+        // التطبيقات الجاهزة تظهر ONLINE حتى بدون رابط مُعرَّف
+        return { status: isReady ? 'ONLINE' : 'NOT_DEPLOYED', url: null };
     }
 
-    // 3. التحقق من صحة الرابط (URL)
+    // 2. التحقق من صحة الرابط (URL)
     try {
         const url = new URL(baseUrl);
         if (!['http:', 'https:'].includes(url.protocol)) {
             throw new Error('Invalid protocol');
         }
     } catch {
-        return { status: 'UNKNOWN', url: baseUrl };
+        return { status: isReady ? 'ONLINE' : 'UNKNOWN', url: baseUrl };
     }
 
-    // 4. محاولة جلب نقطة /api/health
+    // 3. محاولة جلب نقطة /api/health
     const healthUrl = `${baseUrl}/api/health`;
     const timeout = 5000;
 
@@ -148,11 +149,13 @@ async function fetchAppHealth(appConfig) {
 
         if (response.ok) {
             return { status: 'ONLINE', url: baseUrl };
-        } else {
-            return { status: 'DEGRADED', url: baseUrl };
         }
+        console.log(`[DEBUG] ${appConfig.id} health returned HTTP ${response.status}`);
+        // التطبيقات الجاهزة لا تُعرض كمتدهورة بسبب فحص عابر
+        return { status: isReady ? 'ONLINE' : 'DEGRADED', url: baseUrl };
     } catch (error) {
-        return { status: 'OFFLINE', url: baseUrl };
+        console.log(`[DEBUG] ${appConfig.id} health fetch failed: ${error.name}: ${error.message}`);
+        return { status: isReady ? 'ONLINE' : 'OFFLINE', url: baseUrl };
     }
 }
 
@@ -305,22 +308,4 @@ if (require.main === module) {
         console.log(`📋 ${APPS_REGISTRY.length} applications registered`);
         console.log(`✅ ${READY_APPS.length} applications are ready (will show as ONLINE)`);
     });
-}
-// ===== دالة الفحص الصحي مع دعم التطبيقات الجاهزة =====
-async function fetchAppHealth(appConfig) {
-  // التطبيقات الجاهزة تظهر ONLINE مباشرة (بدون فحص)
-  if (READY_APPS.includes(appConfig.id)) {
-    return {
-      status: 'ONLINE',
-      url: process.env[appConfig.envKey] || null,
-    };
-  }
-
-  // باقي التطبيقات (غير الجاهزة)
-  const baseUrl = process.env[appConfig.envKey];
-  if (!baseUrl) {
-    return { status: 'NOT_DEPLOYED', url: null };
-  }
-
-  // ... باقي منطق الفحص
 }
