@@ -23,4 +23,3 @@
     { "src": "/(.*)", "dest": "/server.js" }
   ]
 }
-COBRA_API=https://cobra-protocol.vercel.app
