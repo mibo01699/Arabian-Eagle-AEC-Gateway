@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**Arabian Eagle AEC Gateway** is the unified entry point for the Arabian Eagle A.E.C ecosystem. It acts as a reverse proxy and service registry, aggregating health status from all microservices (e.g., BIGISH-YER, GAV, AJYAL, etc.) and providing a consistent API and frontend interface.
+**Arabian Eagle AEC Gateway** is the unified entry point for the Arabian Eagle A.E.C ecosystem. It acts as a reverse proxy and service registry, aggregating health status from all microservices and providing a consistent API and frontend interface.
 
 This repository contains the Gateway component. All services are currently in **development/prototype** phase and **not deployed** to production. The Gateway is configured to run in `testnet` mode by default.
 
