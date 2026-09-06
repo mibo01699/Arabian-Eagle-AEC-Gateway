@@ -1,86 +1,102 @@
-/* ===== الأزرار السريعة (أسفل الصفحة) ===== */
-.quick-actions {
-  margin: 30px 0 20px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
-.quick-actions-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: #f0f4f8;
+  color: #1a202c;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
 }
-
-.quick-action-card {
-  background: var(--card-bg);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius);
-  padding: 18px 12px;
+.container {
+  max-width: 800px;
+  width: 100%;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  padding: 2rem;
+}
+header {
   text-align: center;
-  text-decoration: none;
-  color: var(--text);
-  transition: var(--transition);
-  cursor: pointer;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2b6cb0;
+}
+header p {
+  color: #4a5568;
+  margin-top: 0.25rem;
+}
+.badge {
+  margin-top: 0.75rem;
+}
+.env {
+  background: #e2e8f0;
+  padding: 0.25rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  color: #2d3748;
+}
+#services h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #2d3748;
+}
+#service-list {
   display: flex;
   flex-direction: column;
+  gap: 0.75rem;
+}
+.service-item {
+  background: #f7fafc;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  border-right: 4px solid #a0aec0;
 }
-
-.quick-action-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow);
-  border-color: rgba(255, 255, 255, 0.2);
+.service-item .info {
+  display: flex;
+  flex-direction: column;
 }
-
-.quick-action-card:active {
-  transform: scale(0.97);
-}
-
-.quick-icon {
-  font-size: 2rem;
-  line-height: 1;
-}
-
-.quick-label {
-  font-size: 0.85rem;
+.service-item .name {
   font-weight: 600;
+  font-size: 1.1rem;
 }
-
-/* تحسينات للشاشات الصغيرة */
-@media (max-width: 480px) {
-  .quick-actions-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-  
-  .quick-action-card {
-    padding: 14px 8px;
-  }
-  
-  .quick-icon {
-    font-size: 1.6rem;
-  }
-  
-  .quick-label {
-    font-size: 0.75rem;
-  }
+.service-item .desc {
+  font-size: 0.875rem;
+  color: #4a5568;
 }
-
-@media (max-width: 360px) {
-  .quick-actions-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-  }
-  
-  .quick-action-card {
-    padding: 10px 6px;
-  }
-  
-  .quick-icon {
-    font-size: 1.3rem;
-  }
-  
-  .quick-label {
-    font-size: 0.65rem;
-  }
+.service-item .status {
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+.status-online { background: #c6f6d5; color: #276749; }
+.status-degraded { background: #fefcbf; color: #975a16; }
+.status-offline { background: #fed7d7; color: #9b2c2c; }
+.status-not_deployed { background: #e2e8f0; color: #4a5568; }
+.status-unknown { background: #edf2f7; color: #4a5568; }
+.loading {
+  text-align: center;
+  color: #718096;
+  padding: 2rem 0;
+}
+footer {
+  margin-top: 2.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #718096;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1.5rem;
 }
