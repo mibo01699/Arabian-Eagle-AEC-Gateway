@@ -1,34 +1,59 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arabian Eagle AEC Gateway</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabian Eagle Gateway</title>
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>🦅 Arabian Eagle AEC Gateway</h1>
-      <p>نقطة الدخول الموحدة لمنظومة AEC</p>
-      <div class="badge">
-        <span class="env">بيئة الاختبار (Testnet)</span>
-      </div>
-    </header>
 
-    <section id="services">
-      <h2>حالة الخدمات</h2>
-      <div id="service-list">
-        <!-- سيتم ملؤها بواسطة JavaScript -->
-        <div class="loading">جارٍ التحميل...</div>
-      </div>
-    </section>
+    <!-- الشريط العلوي -->
+    <div class="top-bar">
+        <div class="logo">
+            <span>🦅 A.E.C Gateway</span>
+        </div>
+        <div class="network-status">
+            <span class="status-dot testnet"></span> Testnet
+        </div>
+        <div id="user-info">
+            <span id="username">زائر</span>
+            <button id="logout-btn" style="display:none;" onclick="logout()">تسجيل خروج</button>
+        </div>
+    </div>
 
-    <footer>
-      <p>Arabian Eagle A.E.C &bull; النسخة 1.0.0 &bull; جميع الخدمات في مرحلة التطوير</p>
-    </footer>
-  </div>
+    <!-- المحتوى الرئيسي -->
+    <div class="container">
+        <!-- قسم تسجيل الدخول -->
+        <div id="login-section" class="card">
+            <h1>مرحباً بك في بوابة Arabian Eagle</h1>
+            <p>سجل الدخول بحساب Pi للوصول إلى الخدمات</p>
+            <button id="login-btn" onclick="loginWithPi()">
+                🚀 تسجيل الدخول بحساب Pi
+            </button>
+            <div id="login-error" class="error" style="display:none;"></div>
+        </div>
 
-  <script src="script.js"></script>
+        <!-- قسم لوحة التحكم (يظهر بعد تسجيل الدخول) -->
+        <div id="dashboard-section" style="display:none;">
+            <div class="card">
+                <h2>مرحباً، <span id="user-name"></span></h2>
+                <p>معرف Pi: <span id="user-id"></span></p>
+            </div>
+
+            <div class="card">
+                <h3>📊 حالة الخدمات</h3>
+                <div id="services-grid">
+                    <!-- سيتم تعبئتها عبر JavaScript -->
+                </div>
+                <button onclick="refreshServices()">🔄 تحديث</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/pi-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
 </body>
 </html>
