@@ -1,213 +1,176 @@
-# Arabian Eagle AEC Gateway
+# 🦅 Arabian Eagle AEC Gateway
 
-## Project Overview
-
-**Arabian Eagle AEC Gateway** is the unified entry point for the Arabian Eagle A.E.C ecosystem. It acts as a reverse proxy and service registry, aggregating health status from all microservices and providing a consistent API and frontend interface.
-
-This repository contains the Gateway component. All services are currently in **development/prototype** phase and **not deployed** to production. The Gateway is configured to run in `testnet` mode by default.
+**Gateway** هو المدخل الموحد لمنظومة Arabian Eagle المتكاملة المكونة من 9 تطبيقات خدمية تعمل ضمن نظام Pi Network البيئي.
 
 ---
 
-## Architecture
+## 📌 الحالة الحالية
+
+| المكون | الحالة |
+|--------|--------|
+| **Gateway** | Foundation built; local development works. Deployment pending environment variable configuration. |
+| **BIGISH-YER** | NOT_DEPLOYED (waiting for separate deployment) |
+| **GAV, AJYAL, Suppliers Auction, COBRA, AMAN, Be-Well, TELCOM, AEC Fund** | NOT_DEPLOYED |
+| **Pi Integration** | NOT_IMPLEMENTED |
+
+---
+
+## 🧱 البنية التقنية
+
+- **اللغة:** JavaScript (Node.js v18+)
+- **الإطار:** Express.js
+- **الاستضافة:** Vercel (خطط للنشر)
+- **قاعدة البيانات:** قيد التخطيط (Supabase)
+- **التكامل مع Pi:** سيُنفذ في مرحلة لاحقة
+
+---
+
+## 📂 هيكل المشروع
 
 ```
 
-Pi Browser / Client
-│
-▼
-┌─────────────────────┐
-│  AEC Gateway        │
-│  - Service Registry │
-│  - Health Checks    │
-│  - Rate Limiting    │
-│  - Security Headers │
-│  - Frontend UI      │
-└─────────┬───────────┘
-│
-▼
-┌─────────────────────┐
-│  BIGISH-YER         │  ← First operational service (testnet-ready)
-│  - YER Tokenomics   │
-│  - Ledger (in-mem)  │
-│  - Idempotency      │
-└─────────────────────┘
+arabian-eagle-aec-gateway/
+├── server.js              # الخادم الرئيسي ونقاط النهاية
+├── package.json           # الاعتماديات والنصوص البرمجية
+├── .env.example           # نموذج متغيرات البيئة
+├── vercel.json            # إعدادات النشر على Vercel
+├── public/
+│   └── index.html         # واجهة أولية (قيد التطوير)
+├── tests/
+│   ├── health.test.js     # اختبارات نقاط النهاية
+│   ├── integration.test.js # اختبارات التكامل
+│   └── security.test.js   # اختبارات الأمان
+└── .github/workflows/
+└── ci.yml             # CI عبر GitHub Actions
 
 ```
 
-Other services (GAV, AJYAL, Suppliers Auction, COBRA, AMAN, Be-Well, TELCOM, AEC Fund) are **NOT_DEPLOYED** in this phase. They will be onboarded once their foundations are complete.
-
 ---
 
-## Gateway Role
+## 🚀 التشغيل المحلي
 
-- **Service Registry**: Maintains a list of all ecosystem applications with their URLs and current status (`ONLINE`, `DEGRADED`, `OFFLINE`, `NOT_DEPLOYED`, `UNKNOWN`).
-- **Health Probes**: Periodically pings each service's `/api/health` endpoint to determine real-time availability.
-- **Request Routing**: (Future) Will proxy requests to the appropriate backend service.
-- **Security**: Enforces HTTP security headers (Helmet), CORS policies, rate limiting, and input validation.
-- **Frontend**: Provides a dashboard displaying service status, environment information, and Pi integration status.
-- **Centralized Logging**: Logs all requests and errors.
+### المتطلبات
+- Node.js v18 أو أحدث
+- npm
 
----
-
-## Current Status
-
-- **Gateway**: Functional, ready for local development and testnet deployment.
-- **BIGISH-YER**: The only service configured; its health endpoint is checked by the Gateway.
-- **All Other Services**: `NOT_DEPLOYED`. Placeholder entries exist in the registry.
-
----
-
-## Testnet Scope
-
-- **All operations are testnet-only**. No mainnet transactions or real financial activity occur.
-- The Gateway environment variable `NODE_ENV` should be set to `testnet` for all non‑local deployments.
-
----
-
-## Environment Variables
-
-See `.env.example` for a full list. Required variables:
-
-| Variable           | Description                        | Example                    |
-|--------------------|------------------------------------|----------------------------|
-| `PORT`             | Port the server listens on         | `3000`                     |
-| `NODE_ENV`         | Environment (`development`/`testnet`) | `testnet`                |
-| `CORS_ORIGIN`      | Allowed origin for CORS            | `https://your-pi-app.com`  |
-| `BIGISH_YER_URL`   | URL to BIGISH-YER service (with `/api`) | `http://localhost:3001/api` |
-| `HEALTH_TIMEOUT`   | Health check timeout in ms         | `5000`                     |
-| `PI_API_KEY`       | Pi Platform API key (server-side only) | `NOT_CONFIGURED`          |
-
-**Never commit real secrets.** Use environment variables in production.
-
----
-
-## Local Development
-
-### Prerequisites
-
-- Node.js v18+ and npm
-- Git
-
-### Setup
+### الخطوات
 
 ```bash
-# Clone the repository
+# 1. استنساخ المستودع
 git clone https://github.com/mibo01699/Arabian-Eagle-AEC-Gateway.git
 cd Arabian-Eagle-AEC-Gateway
 
-# Install dependencies
+# 2. تثبيت الاعتماديات
 npm ci
 
-# Create environment file
+# 3. نسخ ملف متغيرات البيئة
 cp .env.example .env
-# Edit .env with your local service URLs
 
-# Start the Gateway
+# 4. تشغيل الخادم (بيئة التطوير)
 npm start
-# Or with auto-reload:
-npm run dev
+
+# 5. اختبار نقاط النهاية
+curl http://localhost:3314/api/health
 ```
 
-The Gateway will be available at http://localhost:3000.
-
-Running with BIGISH-YER
-
-1. Start BIGISH-YER (see its own README) on http://localhost:3001.
-2. Ensure .env has BIGISH_YER_URL=http://localhost:3001/api.
-3. Gateway will automatically detect the service and display its status.
-
----
-
-Testing
+الاختبارات
 
 ```bash
-# Run all tests
+# تشغيل جميع الاختبارات
 npm test
 
-# Run unit tests only
-npm run test:unit
+# اختبارات الأمان
+npm run test:security
 
-# Run integration tests
+# اختبارات التكامل
 npm run test:integration
 
-# Check security headers and middleware
-npm run test:security
+# جميع الاختبارات معاً
+npm run test:all
 ```
 
-All tests must pass before any deployment. No test is skipped or bypassed.
+---
+
+📡 نقاط النهاية (APIs)
+
+المسار الطريقة الوصف
+/api/health GET صحة البوابة نفسها
+/api/apps GET قائمة جميع الخدمات مع حالتها الفعلية
+/api/apps/:id GET حالة خدمة محددة (مثل /api/apps/bigish)
+/api/status GET اختصار للحالة الكلية
+
+مثال على الاستجابة (/api/health)
+
+```json
+{
+  "service": "arabian-eagle-aec-gateway",
+  "status": "ONLINE",
+  "environment": "testnet",
+  "timestamp": "2026-09-08T...",
+  "pi": {
+    "status": "NOT_IMPLEMENTED"
+  }
+}
+```
 
 ---
 
-Deployment
+🔄 بيئة العمل
 
-Currently, the Gateway is not deployed to any public hosting. Recommended platforms for testnet deployment:
-
-· Vercel (with serverless functions)
-· Heroku (easy environment config)
-· DigitalOcean / AWS (full control)
-
-Checklist before deployment:
-
-☐ Set NODE_ENV=testnet
-☐ Configure all environment variables
-☐ Verify HTTPS is enabled
-☐ Ensure health endpoint responds
-☐ Test Pi Browser compatibility
+البيئة الغرض
+development التطوير المحلي
+testnet الاختبار على شبكة Pi Testnet
+mainnet الإطلاق النهائي على شبكة Pi Mainnet
 
 ---
 
-Pi Integration Status
+🛠️ متغيرات البيئة
 
-Component Status
-Pi SDK included ✅ Yes
-Pi.authenticate() frontend ✅ Example page
-Server-side token verification ❌ Not implemented
-Pi Payments (create/approve/complete) ❌ Not implemented
-App Wallet configured ❌ Not configured
-Pi Testnet transactions ❌ Not processed
-
-Current integration is foundation-only: the frontend has a demo page for Pi authentication, but no backend verification or payment flows are active. This will be completed in a later phase.
+المتغير الوصف مثال
+NODE_ENV بيئة التشغيل testnet
+BIGISH_YER_URL رابط خدمة BIGISH-YER (مع /api) https://bigish-yer.vercel.app/api
+CORS_ORIGIN النطاقات المسموح لها بالاتصال * أو https://gateway.vercel.app
+HEALTH_TIMEOUT مهلة فحص الصحة (مللي ثانية) 3000
+PORT منفذ التشغيل المحلي 3314
 
 ---
 
-Security
+🧪 حالة CI
 
-· Helmet: Sets secure HTTP headers (CSP, XSS protection, etc.)
-· CORS: Only allows requests from configured origin
-· Rate Limiting: Limits API requests per IP (100 per 15 min)
-· Input Validation: Validates request params and body
-· Error Handling: No stack traces exposed in production
-· Secrets: Never committed; all keys come from environment
+الاختبار الحالة
+npm ci ✅ PASS
+npm test ✅ PASS
+npm run test:security ✅ PASS
+npm run test:integration ✅ PASS
+git diff --check ✅ PASS
 
----
-
-Known Limitations
-
-· Service Registry: Hardcoded URLs in .env. Dynamic registration not implemented.
-· Health Checks: Only BIGISH-YER has a realistic health endpoint; others return NOT_DEPLOYED.
-· No Persistent Storage: Gateway does not store any data (stateless).
-· Pi Integration: Demo only; no real authentication or payments.
-· Logging: Basic console logging; no external log aggregation.
+CI أخضر — يعكس نجاحاً حقيقياً للاختبارات.
 
 ---
 
-Roadmap
+🚧 العوائق المتبقية
 
-1. ✅ Phase 1: Gateway foundation + BIGISH-YER testnet-ready.
-2. Phase 2: Persistent storage for Gateway (service registry DB).
-3. Phase 3: Full Pi authentication (server-side verification).
-4. Phase 4: Integrate GAV and AJYAL services.
-5. Phase 5: Enable Pi payments (testnet).
-6. Phase 6: Production hardening and audit.
-
----
-
-License
-
-Proprietary – Arabian Eagle A.E.C.
+العائق الوصف
+نشر BIGISH-YER لم يُنشر بعد — سيُنشر في مرحلة منفصلة
+تكوين BIGISH_YER_URL سيُضبط بعد نشر BIGISH-YER
+تكامل Pi Authentication NOT_IMPLEMENTED — سيُنفذ في المرحلة القادمة
+نشر الخدمات الثمانية الأخرى جميعها NOT_DEPLOYED — سيتم نشرها تباعاً
 
 ---
 
-Contact
+📎 روابط
 
-For internal use only. No public contact information provided.
+· المستودع: https://github.com/mibo01699/Arabian-Eagle-AEC-Gateway
+· بوابة مطوري Pi: https://develop.pinet.com
+· توثيق Pi SDK: https://docs.minepi.com
+
+---
+
+📜 الترخيص
+
+هذا المشروع هو جزء من منظومة Arabian Eagle ويخضع لشروط الاستخدام الخاصة بالمؤسسة.
+
+---
+
+آخر تحديث: 8 سبتمبر 2026
+الإصدار: v1.0-stabilization
