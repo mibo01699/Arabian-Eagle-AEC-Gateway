@@ -1,8 +1,0 @@
-node_modules
-.git
-*.log
-.env
-.DS_Store
-coverage
-.nyc_output
-COBRA_API=https://cobra-protocol.vercel.app
