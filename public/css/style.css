@@ -1,102 +1,191 @@
+/* ألوان المنصة */
+:root {
+    --primary: #1a4d2e;
+    --primary-light: #2d7a4a;
+    --blue: #4a90e2;
+    --bg: #f5f7fa;
+    --text: #333;
+    --card-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 body {
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  background: #f0f4f8;
-  color: #1a202c;
-  display: flex;
-  justify-content: center;
-  padding: 2rem 1rem;
+    background: var(--bg);
+    color: var(--text);
+    direction: rtl;
 }
+
+/* الشريط العلوي */
+.top-bar {
+    background: var(--primary);
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo span {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.network-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.testnet {
+    background: #f5c542;
+}
+
+.mainnet {
+    background: #2ecc71;
+}
+
+#user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#logout-btn {
+    background: #c0392b;
+    color: white;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* الحاويات */
 .container {
-  max-width: 800px;
-  width: 100%;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  padding: 2rem;
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 16px;
 }
-header {
-  text-align: center;
-  border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 1rem;
-  margin-bottom: 2rem;
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 20px;
 }
-header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2b6cb0;
+
+.card h1 {
+    color: var(--primary);
+    margin-bottom: 10px;
 }
-header p {
-  color: #4a5568;
-  margin-top: 0.25rem;
+
+.card h2, .card h3 {
+    color: var(--primary-light);
+    margin-bottom: 12px;
 }
-.badge {
-  margin-top: 0.75rem;
+
+/* زر تسجيل الدخول */
+#login-btn {
+    background: var(--blue);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+    max-width: 320px;
+    margin-top: 16px;
 }
-.env {
-  background: #e2e8f0;
-  padding: 0.25rem 1rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  color: #2d3748;
+
+#login-btn:hover {
+    background: #357abd;
+    transform: scale(1.02);
 }
-#services h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-  color: #2d3748;
+
+.error {
+    color: #e74c3c;
+    margin-top: 12px;
 }
-#service-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+
+/* شبكة الخدمات */
+#services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
 }
-.service-item {
-  background: #f7fafc;
-  border-radius: 12px;
-  padding: 1rem 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-right: 4px solid #a0aec0;
+
+.service-card {
+    background: var(--bg);
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    border-right: 4px solid #ccc;
+    transition: 0.2s;
 }
-.service-item .info {
-  display: flex;
-  flex-direction: column;
+
+.service-card.online {
+    border-right-color: #2ecc71;
 }
-.service-item .name {
-  font-weight: 600;
-  font-size: 1.1rem;
+
+.service-card.offline {
+    border-right-color: #e74c3c;
 }
-.service-item .desc {
-  font-size: 0.875rem;
-  color: #4a5568;
+
+.service-card .name {
+    font-weight: bold;
+    font-size: 0.95rem;
 }
-.service-item .status {
-  font-weight: 600;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  text-transform: uppercase;
+
+.service-card .status-badge {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    color: white;
 }
-.status-online { background: #c6f6d5; color: #276749; }
-.status-degraded { background: #fefcbf; color: #975a16; }
-.status-offline { background: #fed7d7; color: #9b2c2c; }
-.status-not_deployed { background: #e2e8f0; color: #4a5568; }
-.status-unknown { background: #edf2f7; color: #4a5568; }
-.loading {
-  text-align: center;
-  color: #718096;
-  padding: 2rem 0;
+
+.service-card .status-badge.online {
+    background: #2ecc71;
 }
-footer {
-  margin-top: 2.5rem;
-  text-align: center;
-  font-size: 0.875rem;
-  color: #718096;
-  border-top: 1px solid #e2e8f0;
-  padding-top: 1.5rem;
+
+.service-card .status-badge.offline {
+    background: #e74c3c;
+}
+
+/* تجاوب مع الجوال */
+@media (max-width: 600px) {
+    .top-bar {
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
+    }
+    #user-info {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    #services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
