@@ -2,15 +2,19 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    env:
+      NODE_ENV: testnet
+      BIGISH_YER_URL: https://example.com
+      CORS_ORIGIN: '*'
+      HEALTH_TIMEOUT: 3000
 
     steps:
       - name: Checkout
@@ -36,3 +40,10 @@ jobs:
 
       - name: Check whitespace errors
         run: git diff --check
+
+      - name: Verify server starts
+        run: |
+          npm start &
+          sleep 2
+          curl -f http://localhost:3314/api/health || exit 1
+          kill %1
